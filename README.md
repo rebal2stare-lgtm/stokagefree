@@ -1,4 +1,3 @@
-[indx.HTML.html](https://github.com/user-attachments/files/24133113/indx.HTML.html)
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,8 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام التخزين الآمن</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary-color: #4cc9f0;
+            --dark-bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(148, 163, 184, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s ease;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,103 +35,132 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #f1f1f1;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
+            line-height: 1.6;
         }
 
         .page {
             display: none;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            animation: fadeIn 0.5s ease;
         }
 
         .page.active {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         /* تنسيقات تسجيل الدخول */
         .container {
             width: 100%;
             max-width: 500px;
-            margin: 50px auto;
+            margin: 30px auto;
+            animation: slideInRight 0.6s ease;
         }
 
         .header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
         }
 
         .header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            color: #4cc9f0;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 10px;
         }
 
         .form-container {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--card-border);
             margin-bottom: 30px;
+            backdrop-filter: blur(10px);
         }
 
         .form-tabs {
             display: flex;
             margin-bottom: 30px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 5px;
         }
 
         .tab-btn {
-            padding: 15px 30px;
+            flex: 1;
+            padding: 18px 20px;
             background: transparent;
             border: none;
-            color: #a5b4cb;
+            color: var(--text-secondary);
             font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            border-radius: var(--radius-sm);
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .tab-btn.active {
-            color: #4cc9f0;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             font-weight: 600;
-        }
-
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: #4cc9f0;
+            box-shadow: var(--shadow-md);
         }
 
         .form-content {
             display: none;
+            animation: fadeIn 0.4s ease;
         }
 
         .form-content.active {
@@ -120,246 +168,316 @@
         }
 
         .input-group {
-            margin-bottom: 25px;
+            margin-bottom: 28px;
             position: relative;
         }
 
         .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #a5b4cb;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
         }
 
         .input-group input {
             width: 100%;
-            padding: 15px 45px 15px 20px;
+            padding: 18px 50px 18px 20px;
             background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: #ffffff;
-            font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            transition: var(--transition);
         }
 
         .input-group input:focus {
             outline: none;
-            border-color: #4cc9f0;
-            box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.2);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 4px rgba(76, 201, 240, 0.15);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .toggle-password {
             position: absolute;
-            left: 15px;
-            top: 42px;
+            left: 20px;
+            top: 52px;
+            transform: translateY(-50%);
             cursor: pointer;
-            color: #a5b4cb;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .toggle-password:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
         }
 
         .checkbox-group {
             margin: 25px 0;
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
         }
 
         .checkbox-group label {
-            color: #a5b4cb;
+            color: var(--text-secondary);
             font-size: 0.95rem;
-        }
-
-        .terms-link {
-            color: #4cc9f0;
-            text-decoration: none;
+            cursor: pointer;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 17px;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            margin-top: 10px;
         }
 
         .submit-btn:hover {
-            background: linear-gradient(135deg, #3a56d4 0%, #2d0b8a 100%);
+            background: linear-gradient(135deg, var(--primary-dark), #2d0685);
             transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
         }
 
         .message {
             margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: var(--radius-md);
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
         }
 
         .message.success {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid rgba(76, 175, 80, 0.5);
-            color: #81c784;
+            background: rgba(16, 185, 129, 0.15);
+            border: 2px solid var(--success-color);
+            color: var(--success-color);
         }
 
         .message.error {
-            background: rgba(244, 67, 54, 0.2);
-            border: 1px solid rgba(244, 67, 54, 0.5);
-            color: #f44336;
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid var(--error-color);
+            color: var(--error-color);
         }
 
         /* تنسيقات لوحة التحكم */
         .navbar {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
             width: 100%;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--card-border);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
         }
 
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 30px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #4cc9f0;
+            gap: 20px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-user {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 8px 15px;
+            padding: 10px 20px;
             border-radius: 50px;
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .user-info:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .logout-btn {
-            background: rgba(244, 67, 54, 0.2);
-            color: #f44336;
-            border: 1px solid rgba(244, 67, 54, 0.3);
-            padding: 8px 20px;
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 12px 24px;
             border-radius: 50px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-weight: 600;
+            transition: var(--transition);
         }
 
         .logout-btn:hover {
-            background: rgba(244, 67, 54, 0.3);
+            background: rgba(239, 68, 68, 0.3);
+            transform: translateY(-2px);
         }
 
         .dashboard-container {
             display: flex;
             width: 100%;
-            gap: 30px;
-            margin-top: 30px;
+            gap: 40px;
+            margin-top: 40px;
+            min-height: calc(100vh - 180px);
         }
 
         .sidebar {
-            width: 250px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 280px;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
         }
 
         .sidebar-menu {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 40px;
         }
 
         .menu-item {
-            padding: 15px;
+            padding: 18px 20px;
             background: transparent;
             border: none;
-            color: #a5b4cb;
+            color: var(--text-secondary);
             text-align: right;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: flex-start;
+            gap: 18px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 2px solid transparent;
         }
 
         .menu-item:hover {
             background: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
         }
 
         .menu-item.active {
-            background: rgba(76, 201, 240, 0.2);
-            color: #4cc9f0;
-            font-weight: 600;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(58, 12, 163, 0.2));
+            color: var(--secondary-color);
+            font-weight: 700;
+            border-color: rgba(76, 201, 240, 0.3);
         }
 
         .main-content {
             flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            min-height: 600px;
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .section-header h2 {
             display: flex;
             align-items: center;
-            gap: 15px;
-            color: #4cc9f0;
+            gap: 20px;
+            color: var(--secondary-color);
+            font-size: 1.8rem;
         }
 
         .action-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a5b4cb;
-            border-radius: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border: none;
+            color: white;
+            border-radius: var(--radius-md);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
         }
 
         .content-section {
             display: none;
+            animation: fadeIn 0.4s ease;
         }
 
         .content-section.active {
@@ -369,314 +487,422 @@
         /* تنسيقات لوحة المالك */
         .admin-card {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
         }
 
         .stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
         }
 
         .stats-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(58, 12, 163, 0.1));
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            border: 1px solid rgba(76, 201, 240, 0.2);
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--secondary-color);
         }
 
         .stats-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(76, 201, 240, 0.2);
-            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .stats-icon i {
-            font-size: 1.8rem;
-            color: #4cc9f0;
+            font-size: 2rem;
+            color: white;
         }
 
         .stats-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            color: #ffffff;
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 800;
         }
 
         .stats-info p {
-            color: #a5b4cb;
-            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
         }
 
         /* تنسيقات الجداول */
         .table-container {
             overflow-x: auto;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
+            min-width: 800px;
         }
 
         th, td {
-            padding: 15px;
+            padding: 20px;
             text-align: right;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         th {
             background: rgba(76, 201, 240, 0.1);
-            color: #4cc9f0;
-            font-weight: 600;
+            color: var(--secondary-color);
+            font-weight: 700;
+            font-size: 1.05rem;
+            position: sticky;
+            top: 0;
+        }
+
+        tr {
+            transition: var(--transition);
         }
 
         tr:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-block;
         }
 
         .status.active {
-            background: rgba(76, 175, 80, 0.2);
-            color: #81c784;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .status.pending {
-            background: rgba(255, 152, 0, 0.2);
-            color: #ff9800;
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.3);
         }
 
         /* تنسيقات الملفات */
         .files-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
         }
 
         .file-card {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            border: 2px solid transparent;
+            transition: var(--transition);
             cursor: pointer;
             text-align: center;
-            position: relative;
+            backdrop-filter: blur(10px);
         }
 
         .file-card:hover {
-            transform: translateY(-5px);
-            border-color: #4cc9f0;
+            transform: translateY(-10px);
+            border-color: var(--secondary-color);
+            box-shadow: var(--shadow-md);
+            background: rgba(76, 201, 240, 0.05);
         }
 
         .file-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: #4cc9f0;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
         }
 
-        .file-actions {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+        .file-card h4 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
-        .file-action-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a5b4cb;
-            border-radius: 5px;
-            padding: 5px 10px;
+        .upload-area {
+            border: 3px dashed var(--secondary-color);
+            border-radius: var(--radius-lg);
+            padding: 60px 40px;
+            text-align: center;
+            background: rgba(76, 201, 240, 0.05);
+            transition: var(--transition);
             cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
         }
 
-        .file-action-btn:hover {
-            background: rgba(76, 201, 240, 0.2);
-            color: #4cc9f0;
+        .upload-area:hover {
+            background: rgba(76, 201, 240, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .upload-area i {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+        }
+
+        .upload-area h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .upload-area p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            border-radius: 10px;
+            transition: width 0.5s ease;
         }
 
         /* تصميم متجاوب */
-        @media (max-width: 768px) {
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                gap: 30px;
+            }
+            
+            .sidebar {
+                width: 240px;
+            }
+        }
+
+        @media (max-width: 992px) {
             .dashboard-container {
                 flex-direction: column;
             }
             
             .sidebar {
                 width: 100%;
+                position: static;
+                top: auto;
             }
             
-            .header h1 {
-                font-size: 1.8rem;
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .page {
+                padding: 10px;
             }
             
             .nav-container {
                 flex-direction: column;
-                gap: 15px;
+                gap: 20px;
+                padding: 0 20px;
+            }
+            
+            .header {
+                padding: 25px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
             }
             
             .section-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 15px;
+                gap: 20px;
+            }
+            
+            .main-content {
+                padding: 25px 20px;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
             }
             
             .files-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+            
+            .upload-area {
+                padding: 40px 20px;
+            }
+            
+            th, td {
+                padding: 15px 12px;
             }
         }
 
-        /* تنسيقات النوافذ المنبثقة */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+        @media (max-width: 480px) {
+            .files-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-btn {
+                padding: 15px 10px;
+                font-size: 1rem;
+            }
+            
+            .action-btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .stats-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .nav-user {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+            }
+            
+            .logout-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
-        .modal.active {
+        /* تأثيرات إضافية */
+        .glow {
+            animation: pulse 2s infinite;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark), #2d0685);
+        }
+
+        /* تنسيقات خاصة لنظام التخزين */
+        .storage-info {
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--card-border);
+            margin-top: 20px;
+        }
+
+        .storage-info h4 {
             display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
         }
 
-        .modal-content {
-            background: #1a1a2e;
-            border-radius: 15px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-header {
+        .queue-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid var(--card-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
         }
 
-        .modal-header h3 {
-            color: #4cc9f0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .queue-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--secondary-color);
         }
 
-        .close-modal {
-            background: none;
-            border: none;
-            color: #a5b4cb;
-            font-size: 1.5rem;
-            cursor: pointer;
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
         }
 
-        .modal-body {
-            margin-bottom: 20px;
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.1);
         }
 
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
+        .empty-state h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
         }
 
-        /* تنسيقات معاينة الملفات */
-        .file-preview {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .preview-image {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 5px;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .preview-text {
-            white-space: pre-wrap;
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: #e0e0e0;
-            direction: ltr;
-            text-align: left;
-        }
-
-        /* تنسيقات التحميل */
-        .download-btn {
-            background: rgba(76, 175, 80, 0.2);
-            color: #81c784;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .download-btn:hover {
-            background: rgba(76, 175, 80, 0.3);
-        }
-
-        .delete-btn {
-            background: rgba(244, 67, 54, 0.2);
-            color: #f44336;
-            border: 1px solid rgba(244, 67, 54, 0.3);
-        }
-
-        .delete-btn:hover {
-            background: rgba(244, 67, 54, 0.3);
-        }
-
-        .edit-btn {
-            background: rgba(255, 193, 7, 0.2);
-            color: #ffc107;
-            border: 1px solid rgba(255, 193, 7, 0.3);
-        }
-
-        .edit-btn:hover {
-            background: rgba(255, 193, 7, 0.3);
-        }
-
-        .preview-btn {
-            background: rgba(33, 150, 243, 0.2);
-            color: #2196f3;
-            border: 1px solid rgba(33, 150, 243, 0.3);
-        }
-
-        .preview-btn:hover {
-            background: rgba(33, 150, 243, 0.3);
+        .empty-state p {
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -685,14 +911,18 @@
     <div id="login-page" class="page active">
         <div class="container">
             <div class="header">
-                <h1><i class="fas fa-lock"></i> نظام التخزين الآمن</h1>
-                <p>سجل دخولك للوصول إلى ملفاتك المخزنة بشكل آمن</p>
+                <h1><i class="fas fa-shield-alt glow"></i> نظام التخزين الآمن</h1>
+                <p>حافظ على ملفاتك بأمان مع نظام التخزين المشفر</p>
             </div>
             
             <div class="form-container">
                 <div class="form-tabs">
-                    <button class="tab-btn active" id="login-tab">تسجيل الدخول</button>
-                    <button class="tab-btn" id="register-tab">إنشاء حساب جديد</button>
+                    <button class="tab-btn active" id="login-tab">
+                        <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                    </button>
+                    <button class="tab-btn" id="register-tab">
+                        <i class="fas fa-user-plus"></i> إنشاء حساب
+                    </button>
                 </div>
                 
                 <form id="login-form" class="form-content active">
@@ -702,7 +932,7 @@
                     </div>
                     
                     <div class="input-group">
-                        <label for="login-password"><i class="fas fa-key"></i> كلمة المرور</label>
+                        <label for="login-password"><i class="fas fa-lock"></i> كلمة المرور</label>
                         <input type="password" id="login-password" required placeholder="أدخل كلمة المرور">
                         <span class="toggle-password" id="toggle-login-password">
                             <i class="fas fa-eye"></i>
@@ -729,7 +959,7 @@
                     </div>
                     
                     <div class="input-group">
-                        <label for="register-password"><i class="fas fa-key"></i> كلمة المرور</label>
+                        <label for="register-password"><i class="fas fa-lock"></i> كلمة المرور</label>
                         <input type="password" id="register-password" required placeholder="أنشئ كلمة مرور قوية">
                         <span class="toggle-password" id="toggle-register-password">
                             <i class="fas fa-eye"></i>
@@ -737,13 +967,13 @@
                     </div>
                     
                     <div class="input-group">
-                        <label for="confirm-password"><i class="fas fa-key"></i> تأكيد كلمة المرور</label>
+                        <label for="confirm-password"><i class="fas fa-lock"></i> تأكيد كلمة المرور</label>
                         <input type="password" id="confirm-password" required placeholder="أعد إدخال كلمة المرور">
                     </div>
                     
                     <div class="checkbox-group">
                         <input type="checkbox" id="age-consent" required>
-                        <label for="age-consent">أؤكد أن عمري فوق 18 سنة</label>
+                        <label for="age-consent">أؤكد أن عمري فوق 18 سنة وأوافق على الشروط والأحكام</label>
                     </div>
                     
                     <div class="form-footer">
@@ -753,6 +983,22 @@
                         <div class="message" id="register-message"></div>
                     </div>
                 </form>
+                
+                <div class="owner-access glass-effect" style="margin-top: 25px; padding: 20px; border-radius: var(--radius-lg);">
+                    <h3 style="display: flex; align-items: center; gap: 12px; color: var(--secondary-color); margin-bottom: 15px;">
+                        <i class="fas fa-crown"></i> وصول خاص للمالك
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <strong><i class="fas fa-envelope"></i> البريد:</strong>
+                            <p style="margin-top: 5px;">admin@admin.com</p>
+                        </div>
+                        <div>
+                            <strong><i class="fas fa-key"></i> كلمة المرور:</strong>
+                            <p style="margin-top: 5px;">admin123</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -762,14 +1008,17 @@
         <nav class="navbar">
             <div class="nav-container">
                 <div class="nav-logo">
-                    <i class="fas fa-lock"></i>
+                    <i class="fas fa-shield-alt"></i>
                     <span id="dashboard-title">لوحة التحكم</span>
                 </div>
                 
                 <div class="nav-user">
                     <div class="user-info">
-                        <i class="fas fa-user-circle"></i>
-                        <span id="user-name-display">المستخدم</span>
+                        <i class="fas fa-user-circle fa-lg"></i>
+                        <div style="display: flex; flex-direction: column;">
+                            <span id="user-name-display" style="font-weight: 600;">المستخدم</span>
+                            <small style="color: var(--text-secondary); font-size: 0.85rem;" id="user-email-display"></small>
+                        </div>
                     </div>
                     <button class="logout-btn" id="dashboard-logout">
                         <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
@@ -782,25 +1031,25 @@
             <aside class="sidebar">
                 <div class="sidebar-menu">
                     <button class="menu-item active" data-section="files">
-                        <i class="fas fa-file"></i> ملفاتي
+                        <i class="fas fa-file-alt"></i> ملفاتي
                     </button>
                     <button class="menu-item" data-section="upload">
-                        <i class="fas fa-upload"></i> رفع ملف
+                        <i class="fas fa-cloud-upload-alt"></i> رفع ملف
                     </button>
                     <button class="menu-item" data-section="folders">
                         <i class="fas fa-folder"></i> مجلداتي
                     </button>
                     <button class="menu-item" data-section="profile">
-                        <i class="fas fa-user"></i> حسابي
+                        <i class="fas fa-user-cog"></i> حسابي
                     </button>
                 </div>
                 
-                <div class="storage-info" style="padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                <div class="storage-info">
                     <h4><i class="fas fa-database"></i> مساحة التخزين</h4>
-                    <div style="height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; margin: 10px 0;">
-                        <div id="storage-bar" style="height: 100%; background: #4cc9f0; width: 15%; border-radius: 5px;"></div>
+                    <div class="progress-bar">
+                        <div id="storage-bar" class="progress-fill" style="width: 15.2%;"></div>
                     </div>
-                    <p id="storage-text">15.2 ميغابايت مستخدمة من 100 ميغابايت</p>
+                    <p id="storage-text" style="margin-top: 15px; text-align: center; font-weight: 600;">15.2 ميغابايت مستخدمة من 100 ميغابايت</p>
                 </div>
             </aside>
             
@@ -808,9 +1057,9 @@
                 <!-- قسم الملفات -->
                 <section id="files-section" class="content-section active">
                     <div class="section-header">
-                        <h2><i class="fas fa-file"></i> ملفاتي</h2>
+                        <h2><i class="fas fa-file-alt"></i> ملفاتي</h2>
                         <button class="action-btn" id="refresh-files">
-                            <i class="fas fa-sync-alt"></i> تحديث القائمة
+                            <i class="fas fa-sync-alt"></i> تحديث
                         </button>
                     </div>
                     
@@ -822,23 +1071,25 @@
                 <!-- قسم رفع الملف -->
                 <section id="upload-section" class="content-section">
                     <div class="section-header">
-                        <h2><i class="fas fa-upload"></i> رفع ملف جديد</h2>
+                        <h2><i class="fas fa-cloud-upload-alt"></i> رفع ملف جديد</h2>
                     </div>
                     
-                    <div style="border: 2px dashed #4cc9f0; border-radius: 15px; padding: 40px; text-align: center;">
-                        <i class="fas fa-cloud-upload-alt fa-3x" style="color: #4cc9f0; margin-bottom: 20px;"></i>
+                    <div class="upload-area" id="upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
                         <h3>اسحب وأفلت الملفات هنا</h3>
-                        <p style="margin: 10px 0 20px; color: #a5b4cb;">أو انقر لاختيار الملفات</p>
+                        <p>أو انقر لاختيار الملفات</p>
                         <input type="file" id="file-upload-input" multiple style="display: none;">
-                        <button class="submit-btn" id="browse-files" style="width: auto; padding: 10px 30px;">
+                        <button class="submit-btn" id="browse-files" style="width: auto; padding: 15px 40px;">
                             <i class="fas fa-folder-open"></i> تصفح الملفات
                         </button>
                     </div>
                     
-                    <div id="upload-queue" style="margin-top: 20px; display: none;">
-                        <h3><i class="fas fa-list"></i> قائمة الانتظار</h3>
+                    <div id="upload-queue" style="margin-top: 30px; display: none;">
+                        <h3 style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                            <i class="fas fa-list"></i> قائمة الانتظار
+                        </h3>
                         <div id="queue-list"></div>
-                        <button class="submit-btn" id="start-upload" style="margin-top: 20px;">
+                        <button class="submit-btn" id="start-upload" style="margin-top: 30px;">
                             <i class="fas fa-upload"></i> بدء الرفع
                         </button>
                     </div>
@@ -861,10 +1112,10 @@
                 <!-- قسم الملف الشخصي -->
                 <section id="profile-section" class="content-section">
                     <div class="section-header">
-                        <h2><i class="fas fa-user"></i> حسابي</h2>
+                        <h2><i class="fas fa-user-cog"></i> حسابي</h2>
                     </div>
                     
-                    <div class="form-container" style="max-width: 600px;">
+                    <div class="form-container" style="max-width: 700px; margin: 0 auto;">
                         <div class="input-group">
                             <label for="profile-name"><i class="fas fa-user"></i> الاسم الكامل</label>
                             <input type="text" id="profile-name">
@@ -872,11 +1123,11 @@
                         
                         <div class="input-group">
                             <label for="profile-email"><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
-                            <input type="email" id="profile-email" readonly>
+                            <input type="email" id="profile-email" readonly style="background: rgba(255,255,255,0.05);">
                         </div>
                         
                         <div class="input-group">
-                            <label for="current-password"><i class="fas fa-key"></i> كلمة المرور الحالية</label>
+                            <label for="current-password"><i class="fas fa-lock"></i> كلمة المرور الحالية</label>
                             <input type="password" id="current-password">
                         </div>
                         
@@ -911,8 +1162,11 @@
                 
                 <div class="nav-user">
                     <div class="user-info">
-                        <i class="fas fa-crown"></i>
-                        <span>مالك النظام</span>
+                        <i class="fas fa-crown fa-lg"></i>
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600;">مالك النظام</span>
+                            <small style="color: var(--text-secondary); font-size: 0.85rem;">admin@admin.com</small>
+                        </div>
                     </div>
                     <button class="logout-btn" id="owner-logout">
                         <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
@@ -925,16 +1179,16 @@
             <aside class="sidebar">
                 <div class="sidebar-menu">
                     <button class="menu-item active" data-section="overview">
-                        <i class="fas fa-tachometer-alt"></i> نظرة عامة
+                        <i class="fas fa-chart-line"></i> نظرة عامة
                     </button>
                     <button class="menu-item" data-section="users-manage">
-                        <i class="fas fa-users"></i> إدارة المستخدمين
+                        <i class="fas fa-users-cog"></i> إدارة المستخدمين
                     </button>
                     <button class="menu-item" data-section="all-files">
-                        <i class="fas fa-file"></i> جميع الملفات
+                        <i class="fas fa-file-archive"></i> جميع الملفات
                     </button>
                     <button class="menu-item" data-section="system-settings">
-                        <i class="fas fa-cog"></i> إعدادات النظام
+                        <i class="fas fa-cogs"></i> إعدادات النظام
                     </button>
                 </div>
             </aside>
@@ -943,11 +1197,11 @@
                 <!-- نظرة عامة -->
                 <section id="overview-section" class="content-section active">
                     <div class="section-header">
-                        <h2><i class="fas fa-tachometer-alt"></i> نظرة عامة على النظام</h2>
+                        <h2><i class="fas fa-chart-line"></i> نظرة عامة على النظام</h2>
                     </div>
                     
                     <div class="stats-container">
-                        <div class="stats-card">
+                        <div class="stats-card hover-lift">
                             <div class="stats-icon">
                                 <i class="fas fa-users"></i>
                             </div>
@@ -957,7 +1211,7 @@
                             </div>
                         </div>
                         
-                        <div class="stats-card">
+                        <div class="stats-card hover-lift">
                             <div class="stats-icon">
                                 <i class="fas fa-file"></i>
                             </div>
@@ -967,7 +1221,7 @@
                             </div>
                         </div>
                         
-                        <div class="stats-card">
+                        <div class="stats-card hover-lift">
                             <div class="stats-icon">
                                 <i class="fas fa-database"></i>
                             </div>
@@ -976,10 +1230,22 @@
                                 <p>إجمالي التخزين</p>
                             </div>
                         </div>
+                        
+                        <div class="stats-card hover-lift">
+                            <div class="stats-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="stats-info">
+                                <h3 id="storage-usage">0%</h3>
+                                <p>نسبة استخدام التخزين</p>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="admin-card">
-                        <h3><i class="fas fa-user-clock"></i> المستخدمون الجدد</h3>
+                        <h3 style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px;">
+                            <i class="fas fa-user-clock"></i> المستخدمون الجدد
+                        </h3>
                         <div id="recent-users"></div>
                     </div>
                 </section>
@@ -987,7 +1253,12 @@
                 <!-- إدارة المستخدمين -->
                 <section id="users-manage-section" class="content-section">
                     <div class="section-header">
-                        <h2><i class="fas fa-users"></i> إدارة المستخدمين</h2>
+                        <h2><i class="fas fa-users-cog"></i> إدارة المستخدمين</h2>
+                        <div style="display: flex; gap: 15px;">
+                            <button class="action-btn" id="export-users">
+                                <i class="fas fa-download"></i> تصدير
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="table-container">
@@ -998,6 +1269,7 @@
                                     <th>البريد الإلكتروني</th>
                                     <th>تاريخ التسجيل</th>
                                     <th>عدد الملفات</th>
+                                    <th>حالة الحساب</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -1011,7 +1283,12 @@
                 <!-- جميع الملفات -->
                 <section id="all-files-section" class="content-section">
                     <div class="section-header">
-                        <h2><i class="fas fa-file"></i> جميع الملفات</h2>
+                        <h2><i class="fas fa-file-archive"></i> جميع الملفات</h2>
+                        <div style="display: flex; gap: 15px;">
+                            <button class="action-btn" id="export-files">
+                                <i class="fas fa-download"></i> تصدير
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="table-container">
@@ -1036,28 +1313,33 @@
                 <!-- إعدادات النظام -->
                 <section id="system-settings-section" class="content-section">
                     <div class="section-header">
-                        <h2><i class="fas fa-cog"></i> إعدادات النظام</h2>
+                        <h2><i class="fas fa-cogs"></i> إعدادات النظام</h2>
                     </div>
                     
                     <div class="form-container">
                         <div class="input-group">
-                            <label>اسم النظام</label>
+                            <label><i class="fas fa-signature"></i> اسم النظام</label>
                             <input type="text" id="system-name" value="نظام التخزين الآمن">
                         </div>
                         
                         <div class="input-group">
-                            <label>الحد الأقصى لحجم الملف (ميغابايت)</label>
-                            <input type="number" id="max-file-size" value="100" min="1" max="1024">
+                            <label><i class="fas fa-file"></i> الحد الأقصى لحجم الملف (ميغابايت)</label>
+                            <input type="number" id="max-file-size" value="100" min="1" max="1024" step="1">
                         </div>
                         
                         <div class="input-group">
-                            <label>الحد الأقصى للتخزين لكل مستخدم (ميغابايت)</label>
-                            <input type="number" id="user-storage-limit" value="100" min="10" max="10240">
+                            <label><i class="fas fa-database"></i> الحد الأقصى للتخزين لكل مستخدم (ميغابايت)</label>
+                            <input type="number" id="user-storage-limit" value="100" min="10" max="10240" step="10">
                         </div>
                         
                         <div class="checkbox-group">
                             <input type="checkbox" id="allow-registration" checked>
                             <label for="allow-registration">السماح بالتسجيل للمستخدمين الجدد</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="enable-encryption" checked>
+                            <label for="enable-encryption">تمكين تشفير الملفات</label>
                         </div>
                         
                         <button class="submit-btn" id="save-system-settings">
@@ -1070,131 +1352,15 @@
         </div>
     </div>
 
-    <!-- نافذة معاينة الملف -->
-    <div id="preview-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-eye"></i> معاينة الملف</h3>
-                <button class="close-modal" id="close-preview">&times;</button>
-            </div>
-            <div class="modal-body">
-                <h4 id="preview-file-name"></h4>
-                <div class="file-preview" id="file-preview-content">
-                    <!-- محتوى المعاينة سيظهر هنا -->
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="action-btn" id="download-from-preview">
-                    <i class="fas fa-download"></i> تحميل
-                </button>
-                <button class="action-btn" id="close-preview-btn">
-                    <i class="fas fa-times"></i> إغلاق
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة تعديل اسم الملف -->
-    <div id="edit-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> تعديل اسم الملف</h3>
-                <button class="close-modal" id="close-edit">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="input-group">
-                    <label for="edit-file-name">اسم الملف الجديد</label>
-                    <input type="text" id="edit-file-name" placeholder="أدخل الاسم الجديد">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="submit-btn" id="save-edit">
-                    <i class="fas fa-save"></i> حفظ التغييرات
-                </button>
-                <button class="action-btn" id="cancel-edit">
-                    <i class="fas fa-times"></i> إلغاء
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة تأكيد الحذف -->
-    <div id="delete-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-trash"></i> تأكيد الحذف</h3>
-                <button class="close-modal" id="close-delete">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p id="delete-confirm-text">هل أنت متأكد من حذف هذا الملف؟ هذا الإجراء لا يمكن التراجع عنه.</p>
-            </div>
-            <div class="modal-footer">
-                <button class="submit-btn delete-btn" id="confirm-delete">
-                    <i class="fas fa-trash"></i> نعم، احذف الملف
-                </button>
-                <button class="action-btn" id="cancel-delete">
-                    <i class="fas fa-times"></i> إلغاء
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // بيانات الحساب المشترك (موجودة فقط في الكود)
-        const SHARED_ACCOUNT = {
-            email: "rebal@admin.fr",
-            password: "sh@#@#sh"
-        };
-
-        // متغيرات النظام
-        let currentFileToEdit = null;
-        let currentFileToDelete = null;
-        let currentFileToPreview = null;
-
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
         });
 
         function initializeApp() {
-            console.log("جاري تهيئة التطبيق...");
-            
-            // تثبيت بيانات المالك (الحساب المشترك) - غير مرئية للمستخدم
-            const sharedOwnerData = {
-                id: 999,
-                name: "مالك النظام",
-                email: SHARED_ACCOUNT.email,
-                password: SHARED_ACCOUNT.password,
-                createdAt: new Date().toISOString(),
-                files: [],
-                storageUsed: 0,
-                isOwner: true,
-                isShared: true
-            };
-
-            // الحصول على المستخدمين الموجودين
-            let users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-            
-            // التحقق من وجود المالك (الحساب المشترك)
-            const sharedAccountExists = users.some(user => user.email === SHARED_ACCOUNT.email);
-            
-            if (!sharedAccountExists) {
-                console.log("إضافة حساب المالك المشترك...");
-                users.push(sharedOwnerData);
-                localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-            } else {
-                // تحديث كلمة المرور للحساب المشترك
-                const sharedAccount = users.find(user => user.email === SHARED_ACCOUNT.email);
-                if (sharedAccount) {
-                    sharedAccount.password = SHARED_ACCOUNT.password;
-                    sharedAccount.isOwner = true;
-                    sharedAccount.isShared = true;
-                    localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-                }
-            }
-
-            // إضافة بعض المستخدمين الافتراضيين إذا لم يكن هناك مستخدمين
-            if (users.length <= 1) {
+            // تهيئة بيانات التخزين إذا لم تكن موجودة
+            if (!localStorage.getItem('secureStorageUsers')) {
                 const defaultUsers = [
                     {
                         id: 1,
@@ -1204,7 +1370,7 @@
                         createdAt: new Date().toISOString(),
                         files: [],
                         storageUsed: 15.2,
-                        isShared: false
+                        isActive: true
                     },
                     {
                         id: 2,
@@ -1214,55 +1380,35 @@
                         createdAt: new Date().toISOString(),
                         files: [],
                         storageUsed: 8.5,
-                        isShared: false
-                    }
-                ];
-                
-                users.push(...defaultUsers);
-                localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-            }
-
-            // تهيئة الملفات المشتركة إذا لم تكن موجودة
-            if (!localStorage.getItem('sharedFiles')) {
-                const sharedFiles = [
-                    {
-                        id: 1,
-                        name: "مستندات العمل.pdf",
-                        type: "pdf",
-                        size: "2.5 MB",
-                        uploadedBy: "مالك النظام",
-                        uploadedAt: new Date().toISOString(),
-                        shared: true,
-                        content: "هذا ملف PDF تجريبي يحتوي على معلومات مهمة.",
-                        lastModified: new Date().toISOString()
+                        isActive: true
                     },
                     {
-                        id: 2,
-                        name: "صور المشروع.jpg",
-                        type: "jpg",
-                        size: "5.1 MB",
-                        uploadedBy: "مالك النظام",
-                        uploadedAt: new Date().toISOString(),
-                        shared: true,
-                        content: "هذا ملف صورة تجريبي",
-                        lastModified: new Date().toISOString()
+                        id: 0,
+                        name: "مالك النظام",
+                        email: "admin@admin.com",
+                        password: "admin123",
+                        createdAt: new Date().toISOString(),
+                        files: [],
+                        storageUsed: 0,
+                        isOwner: true,
+                        isActive: true
                     }
                 ];
-                localStorage.setItem('sharedFiles', JSON.stringify(sharedFiles));
+                localStorage.setItem('secureStorageUsers', JSON.stringify(defaultUsers));
             }
 
-            // تهيئة إعدادات النظام إذا لم تكن موجودة
             if (!localStorage.getItem('systemSettings')) {
                 const defaultSettings = {
                     systemName: "نظام التخزين الآمن",
                     maxFileSize: 100,
                     userStorageLimit: 100,
-                    allowRegistration: true
+                    allowRegistration: true,
+                    enableEncryption: true
                 };
                 localStorage.setItem('systemSettings', JSON.stringify(defaultSettings));
             }
 
-            // استعادة المستخدم الحالي من الجلسة
+            // استعادة المستخدم الحالي
             const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
             if (currentUser) {
                 if (currentUser.isOwner) {
@@ -1272,57 +1418,10 @@
                     showPage('dashboard-page');
                     loadUserDashboard(currentUser);
                 }
-            } else {
-                showPage('login-page');
             }
 
             // إعداد واجهة تسجيل الدخول
             setupLoginPage();
-            
-            // إعداد النوافذ المنبثقة
-            setupModals();
-            
-            console.log("تم تهيئة التطبيق بنجاح");
-        }
-
-        // إعداد النوافذ المنبثقة
-        function setupModals() {
-            // نافذة معاينة الملف
-            document.getElementById('close-preview').addEventListener('click', closePreviewModal);
-            document.getElementById('close-preview-btn').addEventListener('click', closePreviewModal);
-            
-            // نافذة تعديل الاسم
-            document.getElementById('close-edit').addEventListener('click', closeEditModal);
-            document.getElementById('cancel-edit').addEventListener('click', closeEditModal);
-            
-            // نافذة تأكيد الحذف
-            document.getElementById('close-delete').addEventListener('click', closeDeleteModal);
-            document.getElementById('cancel-delete').addEventListener('click', closeDeleteModal);
-            
-            // زر التحميل من نافذة المعاينة
-            document.getElementById('download-from-preview').addEventListener('click', function() {
-                if (currentFileToPreview) {
-                    downloadFile(currentFileToPreview);
-                    closePreviewModal();
-                }
-            });
-            
-            // زر حفظ التعديل
-            document.getElementById('save-edit').addEventListener('click', saveFileNameEdit);
-            
-            // زر تأكيد الحذف
-            document.getElementById('confirm-delete').addEventListener('click', confirmFileDelete);
-            
-            // إغلاق النوافذ بالنقر خارجها
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        if (this.id === 'preview-modal') closePreviewModal();
-                        if (this.id === 'edit-modal') closeEditModal();
-                        if (this.id === 'delete-modal') closeDeleteModal();
-                    }
-                });
-            });
         }
 
         // إدارة الصفحات
@@ -1331,6 +1430,9 @@
                 page.classList.remove('active');
             });
             document.getElementById(pageId).classList.add('active');
+            
+            // إضافة تأثير عند تغيير الصفحة
+            document.getElementById(pageId).style.animation = 'fadeIn 0.5s ease';
         }
 
         // تسجيل الدخول وإنشاء الحساب
@@ -1348,7 +1450,6 @@
                 registerTab.classList.remove('active');
                 loginForm.classList.add('active');
                 registerForm.classList.remove('active');
-                clearMessages();
             });
 
             registerTab.addEventListener('click', () => {
@@ -1356,71 +1457,62 @@
                 loginTab.classList.remove('active');
                 registerForm.classList.add('active');
                 loginForm.classList.remove('active');
-                clearMessages();
             });
-
-            function clearMessages() {
-                loginMessage.textContent = '';
-                loginMessage.className = 'message';
-                registerMessage.textContent = '';
-                registerMessage.className = 'message';
-            }
 
             // إظهار/إخفاء كلمة المرور
-            document.getElementById('toggle-login-password').addEventListener('click', function() {
-                const passwordInput = document.getElementById('login-password');
-                const icon = this.querySelector('i');
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                } else {
-                    passwordInput.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                }
-            });
+            setupPasswordToggle('toggle-login-password', 'login-password');
+            setupPasswordToggle('toggle-register-password', 'register-password');
 
-            document.getElementById('toggle-register-password').addEventListener('click', function() {
-                const passwordInput = document.getElementById('register-password');
-                const icon = this.querySelector('i');
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                } else {
-                    passwordInput.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                }
-            });
+            function setupPasswordToggle(toggleId, passwordId) {
+                const toggle = document.getElementById(toggleId);
+                const passwordInput = document.getElementById(passwordId);
+                
+                toggle.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.replace('fa-eye', 'fa-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.replace('fa-eye-slash', 'fa-eye');
+                    }
+                });
+            }
 
             // تسجيل الدخول
             document.getElementById('login-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 const email = document.getElementById('login-email').value.trim();
                 const password = document.getElementById('login-password').value;
-
+                
                 const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
                 const user = users.find(u => u.email === email && u.password === password);
-
+                
                 if (user) {
-                    // حفظ المستخدم الحالي في الجلسة
-                    sessionStorage.setItem('currentUser', JSON.stringify(user));
-                    
-                    if (user.isOwner) {
-                        showPage('owner-page');
-                        loadOwnerDashboard();
-                    } else {
-                        showPage('dashboard-page');
-                        loadUserDashboard(user);
+                    if (!user.isActive && !user.isOwner) {
+                        showMessage(loginMessage, 'حسابك معطل، يرجى التواصل مع الدعم', 'error');
+                        return;
                     }
                     
-                    loginMessage.textContent = 'تم تسجيل الدخول بنجاح!';
-                    loginMessage.className = 'message success';
+                    // حفظ بيانات الجلسة
+                    sessionStorage.setItem('currentUser', JSON.stringify(user));
+                    
+                    // عرض رسالة نجاح
+                    showMessage(loginMessage, 'جاري توجيهك إلى لوحة التحكم...', 'success');
+                    
+                    // توجيه حسب نوع المستخدم
+                    setTimeout(() => {
+                        if (user.isOwner) {
+                            showPage('owner-page');
+                            loadOwnerDashboard();
+                        } else {
+                            showPage('dashboard-page');
+                            loadUserDashboard(user);
+                        }
+                    }, 1500);
+                    
                 } else {
-                    loginMessage.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
-                    loginMessage.className = 'message error';
+                    showMessage(loginMessage, 'البريد الإلكتروني أو كلمة المرور غير صحيحة', 'error');
                 }
             });
 
@@ -1431,29 +1523,37 @@
                 const email = document.getElementById('register-email').value.trim();
                 const password = document.getElementById('register-password').value;
                 const confirmPassword = document.getElementById('confirm-password').value;
-
-                // التحقق من صحة البيانات
+                
+                // التحقق من البيانات
                 if (password !== confirmPassword) {
-                    registerMessage.textContent = 'كلمات المرور غير متطابقة';
-                    registerMessage.className = 'message error';
+                    showMessage(registerMessage, 'كلمتا المرور غير متطابقتين', 'error');
                     return;
                 }
-
+                
                 if (password.length < 6) {
-                    registerMessage.textContent = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
-                    registerMessage.className = 'message error';
+                    showMessage(registerMessage, 'كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
                     return;
                 }
-
+                
+                if (!email.includes('@') || !email.includes('.')) {
+                    showMessage(registerMessage, 'البريد الإلكتروني غير صالح', 'error');
+                    return;
+                }
+                
+                const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+                if (!settings.allowRegistration) {
+                    showMessage(registerMessage, 'التسجيل غير متاح حالياً، يرجى المحاولة لاحقاً', 'error');
+                    return;
+                }
+                
                 const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
                 
-                // التحقق من عدم وجود حساب بنفس البريد الإلكتروني
+                // التحقق من عدم تكرار البريد الإلكتروني
                 if (users.some(u => u.email === email)) {
-                    registerMessage.textContent = 'البريد الإلكتروني مستخدم بالفعل';
-                    registerMessage.className = 'message error';
+                    showMessage(registerMessage, 'هذا البريد الإلكتروني مسجل بالفعل', 'error');
                     return;
                 }
-
+                
                 // إنشاء حساب جديد
                 const newUser = {
                     id: Date.now(),
@@ -1463,764 +1563,909 @@
                     createdAt: new Date().toISOString(),
                     files: [],
                     storageUsed: 0,
-                    isOwner: false,
-                    isShared: false
+                    isActive: true
                 };
-
+                
                 users.push(newUser);
                 localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-
-                registerMessage.textContent = 'تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن';
-                registerMessage.className = 'message success';
                 
-                // إعادة تعيين النموذج
+                showMessage(registerMessage, 'تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن', 'success');
+                
+                // تفريغ الحقول
                 document.getElementById('register-form').reset();
                 
-                // التبديل إلى تبويب تسجيل الدخول
-                loginTab.click();
+                setTimeout(() => {
+                    loginTab.click();
+                }, 2000);
             });
+
+            function showMessage(element, text, type) {
+                element.textContent = text;
+                element.className = `message ${type}`;
+                
+                setTimeout(() => {
+                    element.textContent = '';
+                    element.className = 'message';
+                }, 4000);
+            }
         }
 
-        // تحميل لوحة تحكم المستخدم
+        // لوحة تحكم المستخدم
         function loadUserDashboard(user) {
+            // تحديث المعلومات
             document.getElementById('user-name-display').textContent = user.name;
-            document.getElementById('dashboard-title').textContent = `لوحة التحكم - ${user.name}`;
-            
-            // تعبئة بيانات الملف الشخصي
+            document.getElementById('user-email-display').textContent = user.email;
+            document.getElementById('dashboard-title').textContent = `لوحة تحكم ${user.name}`;
             document.getElementById('profile-name').value = user.name;
             document.getElementById('profile-email').value = user.email;
             
             // تحديث مساحة التخزين
             updateStorageInfo(user);
             
-            // تحميل الملفات المشتركة والخاصة
+            // إعداد القوائم الجانبية
+            setupUserMenu();
+            
+            // تحميل الملفات
             loadUserFiles(user);
             
-            // إعداد التنقل بين الأقسام
-            setupDashboardNavigation();
+            // تحميل المجلدات
+            loadUserFolders(user);
+            
+            // إعداد زر تسجيل الخروج
+            document.getElementById('dashboard-logout').addEventListener('click', logout);
             
             // إعداد رفع الملفات
             setupFileUpload(user);
             
-            // إعداد تحديث القائمة
-            document.getElementById('refresh-files').addEventListener('click', function() {
+            // إعداد تحديث الملفات
+            document.getElementById('refresh-files').addEventListener('click', () => {
                 loadUserFiles(user);
-                alert('تم تحديث قائمة الملفات');
+                showNotification('تم تحديث الملفات بنجاح');
             });
             
-            // إعداد تسجيل الخروج
-            document.getElementById('dashboard-logout').addEventListener('click', function() {
-                sessionStorage.removeItem('currentUser');
-                showPage('login-page');
-            });
+            // إعداد إنشاء مجلد جديد
+            document.getElementById('create-folder').addEventListener('click', () => createNewFolder(user));
+            
+            // إعداد حفظ الملف الشخصي
+            document.getElementById('save-profile').addEventListener('click', () => saveUserProfile(user));
+            
+            // إعداد منطقة السحب والإفلات
+            setupDragAndDrop(user);
         }
 
-        // تحديث معلومات التخزين
-        function updateStorageInfo(user) {
-            const storageBar = document.getElementById('storage-bar');
-            const storageText = document.getElementById('storage-text');
-            
-            // حساب النسبة المئوية للتخزين المستخدم
-            const storageLimit = 100;
-            const percentage = (user.storageUsed / storageLimit) * 100;
-            
-            storageBar.style.width = `${Math.min(percentage, 100)}%`;
-            storageText.textContent = `${user.storageUsed.toFixed(1)} ميغابايت مستخدمة من ${storageLimit} ميغابايت`;
-        }
-
-        // تحميل ملفات المستخدم (المشتركة والخاصة)
-        function loadUserFiles(user) {
-            const filesGrid = document.getElementById('files-grid');
-            filesGrid.innerHTML = '';
-            
-            // الحصول على الملفات المشتركة
-            const sharedFiles = JSON.parse(localStorage.getItem('sharedFiles')) || [];
-            
-            // الحصول على ملفات المستخدم الشخصية
-            const userFiles = user.files || [];
-            
-            // عرض الملفات المشتركة
-            sharedFiles.forEach(file => {
-                const fileCard = createFileCard(file, true, user);
-                filesGrid.appendChild(fileCard);
-            });
-            
-            // عرض الملفات الشخصية
-            userFiles.forEach(file => {
-                const fileCard = createFileCard(file, false, user);
-                filesGrid.appendChild(fileCard);
-            });
-            
-            // إذا لم يكن هناك ملفات
-            if (sharedFiles.length === 0 && userFiles.length === 0) {
-                filesGrid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #a5b4cb;">
-                        <i class="fas fa-file fa-3x" style="margin-bottom: 20px;"></i>
-                        <h3>لا توجد ملفات بعد</h3>
-                        <p>ابدأ برفع أول ملف</p>
-                    </div>
-                `;
-            }
-        }
-
-        // إنشاء بطاقة ملف
-        function createFileCard(file, isShared, user) {
-            const fileTypes = {
-                pdf: 'fas fa-file-pdf',
-                jpg: 'fas fa-file-image',
-                jpeg: 'fas fa-file-image',
-                png: 'fas fa-file-image',
-                gif: 'fas fa-file-image',
-                doc: 'fas fa-file-word',
-                docx: 'fas fa-file-word',
-                xls: 'fas fa-file-excel',
-                xlsx: 'fas fa-file-excel',
-                ppt: 'fas fa-file-powerpoint',
-                pptx: 'fas fa-file-powerpoint',
-                zip: 'fas fa-file-archive',
-                rar: 'fas fa-file-archive',
-                mp3: 'fas fa-file-audio',
-                wav: 'fas fa-file-audio',
-                mp4: 'fas fa-file-video',
-                avi: 'fas fa-file-video',
-                mov: 'fas fa-file-video',
-                txt: 'fas fa-file-alt',
-                html: 'fas fa-file-code',
-                css: 'fas fa-file-code',
-                js: 'fas fa-file-code',
-                json: 'fas fa-file-code'
-            };
-
-            const fileExtension = file.type || file.name.split('.').pop().toLowerCase();
-            const fileIcon = fileTypes[fileExtension] || 'fas fa-file';
-            
-            const card = document.createElement('div');
-            card.className = 'file-card';
-            card.innerHTML = `
-                <div class="file-icon">
-                    <i class="${fileIcon}"></i>
-                </div>
-                <h4>${file.name}</h4>
-                <p>${file.size}</p>
-                ${isShared ? '<span class="status active" style="font-size: 0.8rem;">مشترك</span>' : ''}
-                <p style="font-size: 0.8rem; color: #a5b4cb; margin-top: 5px;">بواسطة: ${file.uploadedBy}</p>
-                <div class="file-actions">
-                    <button class="file-action-btn preview-btn" data-file-id="${file.id}" data-is-shared="${isShared}">
-                        <i class="fas fa-eye"></i> معاينة
-                    </button>
-                    <button class="file-action-btn download-btn" data-file-id="${file.id}" data-is-shared="${isShared}">
-                        <i class="fas fa-download"></i> تحميل
-                    </button>
-                    ${!isShared || user.isOwner ? `
-                        <button class="file-action-btn edit-btn" data-file-id="${file.id}" data-is-shared="${isShared}">
-                            <i class="fas fa-edit"></i> تعديل
-                        </button>
-                        <button class="file-action-btn delete-btn" data-file-id="${file.id}" data-is-shared="${isShared}">
-                            <i class="fas fa-trash"></i> حذف
-                        </button>
-                    ` : ''}
-                </div>
-            `;
-            
-            // إضافة الأحداث للأزرار
-            const previewBtn = card.querySelector('.preview-btn');
-            const downloadBtn = card.querySelector('.download-btn');
-            const editBtn = card.querySelector('.edit-btn');
-            const deleteBtn = card.querySelector('.delete-btn');
-            
-            previewBtn.addEventListener('click', () => previewFile(file, isShared));
-            downloadBtn.addEventListener('click', () => downloadFile(file));
-            
-            if (editBtn) {
-                editBtn.addEventListener('click', () => openEditModal(file, isShared, user));
-            }
-            
-            if (deleteBtn) {
-                deleteBtn.addEventListener('click', () => openDeleteModal(file, isShared, user));
-            }
-            
-            return card;
-        }
-
-        // معاينة الملف
-        function previewFile(file, isShared) {
-            currentFileToPreview = file;
-            document.getElementById('preview-file-name').textContent = file.name;
-            const previewContent = document.getElementById('file-preview-content');
-            
-            // تحديد نوع المحتوى للمعاينة
-            const fileType = file.type || file.name.split('.').pop().toLowerCase();
-            
-            if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
-                // معاينة الصور
-                previewContent.innerHTML = `
-                    <p>معاينة الصورة:</p>
-                    <div style="text-align: center;">
-                        <img src="${file.content || '#'}" alt="${file.name}" class="preview-image">
-                        <p style="margin-top: 10px; color: #a5b4cb;">ملاحظة: هذه معاينة تجريبية للملف</p>
-                    </div>
-                `;
-            } else if (['txt', 'html', 'css', 'js', 'json', 'pdf'].includes(fileType)) {
-                // معاينة النصوص
-                previewContent.innerHTML = `
-                    <p>محتوى الملف:</p>
-                    <div class="preview-text">${file.content || 'لا يمكن معاينة محتوى هذا النوع من الملفات'}</div>
-                `;
-            } else {
-                // أنواع أخرى
-                previewContent.innerHTML = `
-                    <p>لا يمكن معاينة هذا النوع من الملفات مباشرة.</p>
-                    <p style="color: #a5b4cb;">يمكنك تحميل الملف لعرضه على جهازك.</p>
-                `;
-            }
-            
-            document.getElementById('preview-modal').classList.add('active');
-        }
-
-        // تحميل الملف
-        function downloadFile(file) {
-            // إنشاء محتوى تجريبي للتحميل
-            const fileType = file.type || file.name.split('.').pop().toLowerCase();
-            let content = file.content || `هذا ملف تجريبي: ${file.name}\nتم إنشاؤه في: ${new Date().toLocaleString('ar-SA')}\nالحجم: ${file.size}`;
-            
-            // إنشاء عنصر تحميل
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = file.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            // تسجيل التحميل
-            console.log(`تم تحميل الملف: ${file.name}`);
-            alert(`تم بدء تحميل الملف: ${file.name}`);
-        }
-
-        // فتح نافذة تعديل الاسم
-        function openEditModal(file, isShared, user) {
-            currentFileToEdit = { file, isShared, user };
-            document.getElementById('edit-file-name').value = file.name;
-            document.getElementById('edit-modal').classList.add('active');
-        }
-
-        // حفظ تعديل الاسم
-        function saveFileNameEdit() {
-            if (!currentFileToEdit) return;
-            
-            const newName = document.getElementById('edit-file-name').value.trim();
-            if (!newName) {
-                alert('الرجاء إدخال اسم للملف');
-                return;
-            }
-            
-            const { file, isShared, user } = currentFileToEdit;
-            
-            if (isShared) {
-                // تحديث الملف المشترك
-                const sharedFiles = JSON.parse(localStorage.getItem('sharedFiles')) || [];
-                const fileIndex = sharedFiles.findIndex(f => f.id === file.id);
-                if (fileIndex !== -1) {
-                    sharedFiles[fileIndex].name = newName;
-                    sharedFiles[fileIndex].lastModified = new Date().toISOString();
-                    localStorage.setItem('sharedFiles', JSON.stringify(sharedFiles));
-                }
-            } else {
-                // تحديث الملف الشخصي
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-                const userIndex = users.findIndex(u => u.id === user.id);
-                if (userIndex !== -1) {
-                    const fileIndex = users[userIndex].files.findIndex(f => f.id === file.id);
-                    if (fileIndex !== -1) {
-                        users[userIndex].files[fileIndex].name = newName;
-                        users[userIndex].files[fileIndex].lastModified = new Date().toISOString();
-                        localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-                        
-                        // تحديث الجلسة
-                        const currentUser = users[userIndex];
-                        sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    }
-                }
-            }
-            
-            closeEditModal();
-            loadUserFiles(user);
-            alert('تم تحديث اسم الملف بنجاح');
-        }
-
-        // فتح نافذة تأكيد الحذف
-        function openDeleteModal(file, isShared, user) {
-            currentFileToDelete = { file, isShared, user };
-            document.getElementById('delete-confirm-text').textContent = `هل أنت متأكد من حذف الملف "${file.name}"؟ هذا الإجراء لا يمكن التراجع عنه.`;
-            document.getElementById('delete-modal').classList.add('active');
-        }
-
-        // تأكيد حذف الملف
-        function confirmFileDelete() {
-            if (!currentFileToDelete) return;
-            
-            const { file, isShared, user } = currentFileToDelete;
-            
-            if (isShared) {
-                // حذف الملف المشترك
-                const sharedFiles = JSON.parse(localStorage.getItem('sharedFiles')) || [];
-                const updatedFiles = sharedFiles.filter(f => f.id !== file.id);
-                localStorage.setItem('sharedFiles', JSON.stringify(updatedFiles));
-            } else {
-                // حذف الملف الشخصي
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-                const userIndex = users.findIndex(u => u.id === user.id);
-                if (userIndex !== -1) {
-                    // تخفيض مساحة التخزين المستخدمة
-                    const fileSize = parseFloat(file.size) || 0;
-                    users[userIndex].storageUsed = Math.max(0, users[userIndex].storageUsed - fileSize);
-                    
-                    // حذف الملف
-                    users[userIndex].files = users[userIndex].files.filter(f => f.id !== file.id);
-                    localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-                    
-                    // تحديث الجلسة
-                    const currentUser = users[userIndex];
-                    sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    
-                    // تحديث مساحة التخزين
-                    updateStorageInfo(currentUser);
-                }
-            }
-            
-            closeDeleteModal();
-            loadUserFiles(user);
-            alert('تم حذف الملف بنجاح');
-        }
-
-        // إغلاق نوافذ المنبثقة
-        function closePreviewModal() {
-            document.getElementById('preview-modal').classList.remove('active');
-            currentFileToPreview = null;
-        }
-
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.remove('active');
-            currentFileToEdit = null;
-        }
-
-        function closeDeleteModal() {
-            document.getElementById('delete-modal').classList.remove('active');
-            currentFileToDelete = null;
-        }
-
-        // إعداد التنقل بين أقسام لوحة التحكم
-        function setupDashboardNavigation() {
-            const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
-            const contentSections = document.querySelectorAll('.main-content .content-section');
-            
-            menuItems.forEach(item => {
+        function setupUserMenu() {
+            document.querySelectorAll('#dashboard-page .menu-item').forEach(item => {
                 item.addEventListener('click', function() {
-                    const sectionId = this.getAttribute('data-section');
-                    
-                    // تحديث القائمة النشطة
-                    menuItems.forEach(i => i.classList.remove('active'));
+                    document.querySelectorAll('#dashboard-page .menu-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
                     this.classList.add('active');
                     
-                    // إظهار القسم المحدد
-                    contentSections.forEach(section => {
+                    document.querySelectorAll('#dashboard-page .content-section').forEach(section => {
                         section.classList.remove('active');
-                        if (section.id === `${sectionId}-section`) {
-                            section.classList.add('active');
-                        }
                     });
+                    
+                    const sectionId = this.dataset.section + '-section';
+                    document.getElementById(sectionId).classList.add('active');
                 });
             });
         }
 
-        // إعداد رفع الملفات
+        function loadUserFiles(user) {
+            const filesGrid = document.getElementById('files-grid');
+            const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+            
+            if (userFiles.length === 0) {
+                filesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>لا توجد ملفات مخزنة بعد</h3>
+                        <p>قم برفع أول ملف باستخدام قسم "رفع ملف"</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            userFiles.forEach(file => {
+                const fileType = file.type || getFileExtension(file.name);
+                const icon = getFileIcon(fileType);
+                
+                html += `
+                    <div class="file-card hover-lift">
+                        <div class="file-icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <h4>${file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name}</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 5px 0;">${file.size} ميغابايت</p>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem;">${file.date}</p>
+                    </div>
+                `;
+            });
+            
+            filesGrid.innerHTML = html;
+        }
+
+        function loadUserFolders(user) {
+            const foldersGrid = document.getElementById('folders-grid');
+            const userFolders = JSON.parse(localStorage.getItem(`userFolders_${user.email}`)) || [
+                { name: 'الملفات العامة', fileCount: 5 },
+                { name: 'الملفات الشخصية', fileCount: 3 },
+                { name: 'العمل', fileCount: 2 }
+            ];
+            
+            if (userFolders.length === 0) {
+                foldersGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-folder"></i>
+                        <h3>لا توجد مجلدات</h3>
+                        <p>أنشئ مجلداً جديداً لتنظيم ملفاتك</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            userFolders.forEach(folder => {
+                html += `
+                    <div class="file-card hover-lift">
+                        <div class="file-icon" style="color: #f59e0b;">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <h4>${folder.name}</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 5px 0;">${folder.fileCount} ملف</p>
+                        <button class="action-btn" style="padding: 8px 16px; font-size: 0.9rem; width: 100%; margin-top: 10px;">
+                            <i class="fas fa-eye"></i> عرض
+                        </button>
+                    </div>
+                `;
+            });
+            
+            foldersGrid.innerHTML = html;
+        }
+
+        function updateStorageInfo(user) {
+            const storageUsed = user.storageUsed || 0;
+            const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+            const storageLimit = settings.userStorageLimit || 100;
+            
+            const percentage = Math.min((storageUsed / storageLimit) * 100, 100);
+            document.getElementById('storage-bar').style.width = `${percentage}%`;
+            document.getElementById('storage-text').textContent = 
+                `${storageUsed.toFixed(1)} ميغابايت مستخدمة من ${storageLimit} ميغابايت`;
+        }
+
         function setupFileUpload(user) {
             const browseBtn = document.getElementById('browse-files');
             const fileInput = document.getElementById('file-upload-input');
             const uploadQueue = document.getElementById('upload-queue');
             const queueList = document.getElementById('queue-list');
             const startUploadBtn = document.getElementById('start-upload');
+            
             let filesToUpload = [];
-
-            browseBtn.addEventListener('click', () => {
-                fileInput.click();
-            });
-
+            
+            browseBtn.addEventListener('click', () => fileInput.click());
+            
             fileInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    filesToUpload = Array.from(this.files);
-                    displayUploadQueue();
+                    addFilesToQueue(Array.from(this.files), user);
                 }
             });
-
+            
+            function addFilesToQueue(files, user) {
+                const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+                const maxFileSize = settings.maxFileSize || 100;
+                
+                files.forEach(file => {
+                    const fileSizeMB = file.size / (1024 * 1024);
+                    
+                    if (fileSizeMB > maxFileSize) {
+                        showNotification(`الملف ${file.name} يتجاوز الحد الأقصى المسموح به (${maxFileSize} ميغابايت)`, 'error');
+                        return;
+                    }
+                    
+                    const existingIndex = filesToUpload.findIndex(f => f.name === file.name && f.size === file.size);
+                    if (existingIndex === -1) {
+                        filesToUpload.push(file);
+                    }
+                });
+                
+                if (filesToUpload.length > 0) {
+                    displayUploadQueue();
+                }
+            }
+            
             function displayUploadQueue() {
-                queueList.innerHTML = '';
+                let html = '';
                 filesToUpload.forEach((file, index) => {
-                    const fileSize = (file.size / (1024 * 1024)).toFixed(2);
-                    const queueItem = document.createElement('div');
-                    queueItem.className = 'admin-card';
-                    queueItem.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                    const size = (file.size / (1024 * 1024)).toFixed(2);
+                    html += `
+                        <div class="queue-item" id="queue-item-${index}">
                             <div>
                                 <i class="fas fa-file" style="margin-left: 10px;"></i>
                                 <strong>${file.name}</strong>
-                                <span style="color: #a5b4cb; margin-right: 10px;">(${fileSize} MB)</span>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">
+                                    ${size} ميغابايت • ${getFileType(file.type)}
+                                </p>
                             </div>
-                            <button class="action-btn remove-file" data-index="${index}" style="padding: 5px 10px;">
-                                <i class="fas fa-times"></i>
-                            </button>
+                            <div>
+                                <button onclick="removeFromQueue(${index})" style="background: var(--error-color); color: white; border: none; padding: 8px 12px; border-radius: var(--radius-sm); cursor: pointer;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
                     `;
-                    queueList.appendChild(queueItem);
                 });
-
+                
+                queueList.innerHTML = html;
                 uploadQueue.style.display = 'block';
-                
-                // إضافة أحداث لحذف الملفات من قائمة الانتظار
-                document.querySelectorAll('.remove-file').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        filesToUpload.splice(index, 1);
-                        if (filesToUpload.length === 0) {
-                            uploadQueue.style.display = 'none';
-                        } else {
-                            displayUploadQueue();
-                        }
-                    });
-                });
             }
-
-            startUploadBtn.addEventListener('click', function() {
-                if (filesToUpload.length === 0) return;
-                
-                // تحديث معلومات المستخدم
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-                const currentUserIndex = users.findIndex(u => u.id === user.id);
-                
-                if (currentUserIndex !== -1) {
-                    filesToUpload.forEach(file => {
-                        const fileSize = file.size / (1024 * 1024);
-                        const fileType = file.name.split('.').pop().toLowerCase();
-                        
-                        // قراءة محتوى الملف إذا كان نصي
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const fileContent = e.target.result;
-                            
-                            const newFile = {
-                                id: Date.now() + Math.random(),
-                                name: file.name,
-                                type: fileType,
-                                size: `${fileSize.toFixed(2)} MB`,
-                                uploadedBy: user.name,
-                                uploadedAt: new Date().toISOString(),
-                                lastModified: new Date().toISOString(),
-                                shared: false,
-                                content: fileContent.substring(0, 1000) // تخزين أول 1000 حرف فقط للمعاينة
-                            };
-                            
-                            // إضافة الملف إلى المستخدم
-                            users[currentUserIndex].files.push(newFile);
-                            users[currentUserIndex].storageUsed += fileSize;
-                            
-                            // إضافة الملف إلى الملفات المشتركة إذا كان المستخدم هو المالك
-                            if (user.isOwner) {
-                                const sharedFiles = JSON.parse(localStorage.getItem('sharedFiles')) || [];
-                                newFile.shared = true;
-                                sharedFiles.push(newFile);
-                                localStorage.setItem('sharedFiles', JSON.stringify(sharedFiles));
-                            }
-                            
-                            localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-                            
-                            // تحديث جلسة المستخدم الحالي
-                            const updatedUser = users[currentUserIndex];
-                            sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
-                            
-                            // تحديث الواجهة
-                            loadUserDashboard(updatedUser);
-                            updateStorageInfo(updatedUser);
-                            
-                            // إعادة تعيين
-                            filesToUpload = [];
-                            fileInput.value = '';
-                            uploadQueue.style.display = 'none';
-                            
-                            // إظهار رسالة نجاح
-                            alert('تم رفع الملفات بنجاح!');
-                        };
-                        
-                        // قراءة الملف كنص
-                        reader.readAsText(file.slice(0, 1000)); // قراءة أول 1000 بايت فقط
-                    });
+            
+            window.removeFromQueue = function(index) {
+                filesToUpload.splice(index, 1);
+                if (filesToUpload.length > 0) {
+                    displayUploadQueue();
+                } else {
+                    uploadQueue.style.display = 'none';
                 }
+            };
+            
+            startUploadBtn.addEventListener('click', function() {
+                if (filesToUpload.length === 0) {
+                    showNotification('لا توجد ملفات للرفع', 'error');
+                    return;
+                }
+                
+                // محاكاة رفع الملفات
+                let uploadedCount = 0;
+                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                
+                filesToUpload.forEach(file => {
+                    const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+                    const newFile = {
+                        id: Date.now() + Math.random(),
+                        name: file.name,
+                        size: fileSize,
+                        type: getFileType(file.type),
+                        date: new Date().toLocaleDateString('ar-SA'),
+                        folder: 'الملفات العامة'
+                    };
+                    
+                    userFiles.push(newFile);
+                    uploadedCount++;
+                });
+                
+                // تحديث تخزين المستخدم
+                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+                const userIndex = users.findIndex(u => u.email === user.email);
+                if (userIndex !== -1) {
+                    users[userIndex].storageUsed += filesToUpload.reduce((total, file) => 
+                        total + (file.size / (1024 * 1024)), 0);
+                    localStorage.setItem('secureStorageUsers', JSON.stringify(users));
+                    
+                    // تحديث الجلسة
+                    const updatedUser = users[userIndex];
+                    sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                }
+                
+                localStorage.setItem(`userFiles_${user.email}`, JSON.stringify(userFiles));
+                
+                showNotification(`تم رفع ${uploadedCount} ملف بنجاح`, 'success');
+                filesToUpload = [];
+                uploadQueue.style.display = 'none';
+                fileInput.value = '';
+                
+                // تحديث العرض
+                loadUserFiles(user);
+                updateStorageInfo(user);
             });
         }
 
-        // تحميل لوحة تحكم المالك
-        function loadOwnerDashboard() {
-            // إعداد التنقل بين أقسام لوحة المالك
-            const menuItems = document.querySelectorAll('#owner-page .sidebar-menu .menu-item');
-            const contentSections = document.querySelectorAll('#owner-page .main-content .content-section');
+        function setupDragAndDrop(user) {
+            const uploadArea = document.getElementById('upload-area');
             
-            menuItems.forEach(item => {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                uploadArea.style.borderColor = 'var(--primary-color)';
+                uploadArea.style.background = 'rgba(67, 97, 238, 0.1)';
+            }
+            
+            function unhighlight() {
+                uploadArea.style.borderColor = 'var(--secondary-color)';
+                uploadArea.style.background = 'rgba(76, 201, 240, 0.05)';
+            }
+            
+            uploadArea.addEventListener('drop', function(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    addFilesToQueue(Array.from(files), user);
+                }
+                
+                unhighlight();
+            });
+        }
+
+        function getFileType(fileType) {
+            if (!fileType) return 'غير معروف';
+            if (fileType.includes('pdf')) return 'PDF';
+            if (fileType.includes('image')) return 'صورة';
+            if (fileType.includes('video')) return 'فيديو';
+            if (fileType.includes('audio')) return 'صوت';
+            if (fileType.includes('text') || fileType.includes('document')) return 'مستند';
+            if (fileType.includes('zip') || fileType.includes('compressed')) return 'مضغوط';
+            return 'ملف';
+        }
+
+        function getFileIcon(fileType) {
+            switch(fileType.toLowerCase()) {
+                case 'pdf': return 'fas fa-file-pdf';
+                case 'صورة': return 'fas fa-file-image';
+                case 'فيديو': return 'fas fa-file-video';
+                case 'صوت': return 'fas fa-file-audio';
+                case 'مستند': return 'fas fa-file-word';
+                case 'مضغوط': return 'fas fa-file-archive';
+                default: return 'fas fa-file';
+            }
+        }
+
+        function getFileExtension(filename) {
+            return filename.split('.').pop().toLowerCase();
+        }
+
+        function createNewFolder(user) {
+            const folderName = prompt('أدخل اسم المجلد الجديد:', 'مجلد جديد');
+            if (folderName && folderName.trim()) {
+                const userFolders = JSON.parse(localStorage.getItem(`userFolders_${user.email}`)) || [];
+                userFolders.push({
+                    id: Date.now(),
+                    name: folderName.trim(),
+                    fileCount: 0,
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem(`userFolders_${user.email}`, JSON.stringify(userFolders));
+                loadUserFolders(user);
+                showNotification('تم إنشاء المجلد بنجاح', 'success');
+            }
+        }
+
+        function saveUserProfile(user) {
+            const newName = document.getElementById('profile-name').value.trim();
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmNewPassword = document.getElementById('confirm-new-password').value;
+            const messageElement = document.getElementById('profile-message');
+            
+            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const userIndex = users.findIndex(u => u.email === user.email);
+            
+            if (userIndex === -1) {
+                showMessage(messageElement, 'حدث خطأ، يرجى إعادة تسجيل الدخول', 'error');
+                return;
+            }
+            
+            let hasChanges = false;
+            let message = '';
+            
+            // تحديث الاسم
+            if (newName && newName !== user.name) {
+                if (newName.length < 3) {
+                    showMessage(messageElement, 'الاسم يجب أن يكون 3 أحرف على الأقل', 'error');
+                    return;
+                }
+                users[userIndex].name = newName;
+                hasChanges = true;
+                message += 'تم تحديث الاسم. ';
+            }
+            
+            // تحديث كلمة المرور
+            if (currentPassword || newPassword || confirmNewPassword) {
+                if (!currentPassword) {
+                    showMessage(messageElement, 'يجب إدخال كلمة المرور الحالية', 'error');
+                    return;
+                }
+                
+                if (users[userIndex].password !== currentPassword) {
+                    showMessage(messageElement, 'كلمة المرور الحالية غير صحيحة', 'error');
+                    return;
+                }
+                
+                if (!newPassword) {
+                    showMessage(messageElement, 'يجب إدخال كلمة المرور الجديدة', 'error');
+                    return;
+                }
+                
+                if (newPassword.length < 6) {
+                    showMessage(messageElement, 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل', 'error');
+                    return;
+                }
+                
+                if (newPassword !== confirmNewPassword) {
+                    showMessage(messageElement, 'كلمتا المرور الجديدة غير متطابقتين', 'error');
+                    return;
+                }
+                
+                users[userIndex].password = newPassword;
+                hasChanges = true;
+                message += 'تم تحديث كلمة المرور. ';
+            }
+            
+            if (hasChanges) {
+                localStorage.setItem('secureStorageUsers', JSON.stringify(users));
+                
+                // تحديث الجلسة
+                const updatedUser = users[userIndex];
+                sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                
+                showMessage(messageElement, message || 'تم حفظ التغييرات بنجاح', 'success');
+                
+                // تحديث العرض
+                document.getElementById('user-name-display').textContent = updatedUser.name;
+                document.getElementById('dashboard-title').textContent = `لوحة تحكم ${updatedUser.name}`;
+                
+                // تفريغ حقول كلمة المرور
+                document.getElementById('current-password').value = '';
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-new-password').value = '';
+                
+                // إعادة تحميل لوحة التحكم بعد 2 ثانية
+                setTimeout(() => {
+                    loadUserDashboard(updatedUser);
+                }, 2000);
+            } else {
+                showMessage(messageElement, 'لم تقم بإجراء أي تغييرات', 'info');
+            }
+        }
+
+        // لوحة تحكم المالك
+        function loadOwnerDashboard() {
+            setupOwnerMenu();
+            loadOwnerOverview();
+            loadAllUsers();
+            loadAllFiles();
+            setupSystemSettings();
+            
+            document.getElementById('owner-logout').addEventListener('click', logout);
+            
+            // إعداد أزرار التصدير
+            document.getElementById('export-users').addEventListener('click', exportUsers);
+            document.getElementById('export-files').addEventListener('click', exportFiles);
+        }
+
+        function setupOwnerMenu() {
+            document.querySelectorAll('#owner-page .menu-item').forEach(item => {
                 item.addEventListener('click', function() {
-                    const sectionId = this.getAttribute('data-section');
-                    
-                    menuItems.forEach(i => i.classList.remove('active'));
+                    document.querySelectorAll('#owner-page .menu-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
                     this.classList.add('active');
                     
-                    contentSections.forEach(section => {
+                    document.querySelectorAll('#owner-page .content-section').forEach(section => {
                         section.classList.remove('active');
-                        if (section.id === `${sectionId}-section`) {
-                            section.classList.add('active');
-                        }
                     });
                     
-                    // تحميل البيانات حسب القسم
-                    switch(sectionId) {
-                        case 'overview':
-                            loadOverviewStats();
-                            break;
-                        case 'users-manage':
-                            loadUsersManagement();
-                            break;
-                        case 'all-files':
-                            loadAllFiles();
-                            break;
-                        case 'system-settings':
-                            loadSystemSettings();
-                            break;
-                    }
+                    const sectionId = this.dataset.section + '-section';
+                    document.getElementById(sectionId).classList.add('active');
                 });
-            });
-            
-            // تحميل نظرة عامة
-            loadOverviewStats();
-            
-            // إعداد تسجيل الخروج
-            document.getElementById('owner-logout').addEventListener('click', function() {
-                sessionStorage.removeItem('currentUser');
-                showPage('login-page');
             });
         }
 
-        // تحميل إحصائيات نظرة عامة
-        function loadOverviewStats() {
+        function loadOwnerOverview() {
             const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-            const sharedFiles = JSON.parse(localStorage.getItem('sharedFiles')) || [];
-            
-            // حساب إجمالي الملفات
-            let totalFiles = sharedFiles.length;
-            users.forEach(user => {
-                totalFiles += (user.files || []).length;
-            });
-            
-            // حساب إجمالي التخزين
-            let totalStorage = 0;
-            users.forEach(user => {
-                totalStorage += user.storageUsed || 0;
-            });
+            const regularUsers = users.filter(u => !u.isOwner);
+            const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
             
             // تحديث الإحصائيات
-            document.getElementById('total-users-count').textContent = users.filter(u => !u.isOwner).length;
+            document.getElementById('total-users-count').textContent = regularUsers.length;
+            
+            let totalFiles = 0;
+            let totalStorage = 0;
+            let totalStorageLimit = 0;
+            
+            users.forEach(user => {
+                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                totalFiles += userFiles.length;
+                totalStorage += user.storageUsed || 0;
+                if (!user.isOwner) {
+                    totalStorageLimit += settings.userStorageLimit || 100;
+                }
+            });
+            
             document.getElementById('total-files-count').textContent = totalFiles;
             document.getElementById('total-storage-used').textContent = totalStorage.toFixed(1) + ' ميغابايت';
             
+            const storagePercentage = totalStorageLimit > 0 ? ((totalStorage / totalStorageLimit) * 100).toFixed(1) : 0;
+            document.getElementById('storage-usage').textContent = storagePercentage + '%';
+            
             // عرض المستخدمين الجدد
             const recentUsersDiv = document.getElementById('recent-users');
-            const recentUsers = users
-                .filter(u => !u.isOwner)
+            const recentUsers = [...regularUsers]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .slice(0, 5);
             
-            if (recentUsers.length > 0) {
-                recentUsersDiv.innerHTML = '';
-                recentUsers.forEach(user => {
-                    const userEl = document.createElement('div');
-                    userEl.className = 'admin-card';
-                    userEl.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <i class="fas fa-user"></i>
-                                <strong>${user.name}</strong>
-                                <span style="color: #a5b4cb; margin-right: 10px;">(${user.email})</span>
-                            </div>
-                            <span style="color: #a5b4cb; font-size: 0.9rem;">
-                                ${new Date(user.createdAt).toLocaleDateString('ar-SA')}
-                            </span>
-                        </div>
-                    `;
-                    recentUsersDiv.appendChild(userEl);
-                });
+            if (recentUsers.length === 0) {
+                recentUsersDiv.innerHTML = '<div class="empty-state" style="padding: 20px;"><p>لا يوجد مستخدمون</p></div>';
+                return;
             }
+            
+            let html = '';
+            recentUsers.forEach(user => {
+                const date = new Date(user.createdAt).toLocaleDateString('ar-SA');
+                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                
+                html += `
+                    <div class="queue-item">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                ${user.name.charAt(0)}
+                            </div>
+                            <div>
+                                <strong>${user.name}</strong>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">
+                                    ${user.email} • ${userFiles.length} ملف
+                                </p>
+                            </div>
+                        </div>
+                        <span style="color: var(--text-secondary); font-size: 0.9rem;">${date}</span>
+                    </div>
+                `;
+            });
+            
+            recentUsersDiv.innerHTML = html;
         }
 
-        // تحميل إدارة المستخدمين
-        function loadUsersManagement() {
+        function loadAllUsers() {
             const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const regularUsers = users.filter(u => !u.isOwner);
             const tbody = document.getElementById('users-table-body');
-            tbody.innerHTML = '';
             
-            users.forEach(user => {
-                if (!user.isOwner) {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td>${new Date(user.createdAt).toLocaleDateString('ar-SA')}</td>
-                        <td>${(user.files || []).length}</td>
+            if (regularUsers.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <div class="empty-state" style="padding: 0;">
+                                <i class="fas fa-users" style="font-size: 2rem;"></i>
+                                <p>لا يوجد مستخدمون مسجلون</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            regularUsers.forEach(user => {
+                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                const date = new Date(user.createdAt).toLocaleDateString('ar-SA');
+                const status = user.isActive ? 'نشط' : 'معطل';
+                const statusClass = user.isActive ? 'active' : 'pending';
+                
+                html += `
+                    <tr>
                         <td>
-                            <button class="action-btn" onclick="deleteUser(${user.id})" style="padding: 5px 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 35px; height: 35px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                    ${user.name.charAt(0)}
+                                </div>
+                                ${user.name}
+                            </div>
+                        </td>
+                        <td>${user.email}</td>
+                        <td>${date}</td>
+                        <td>${userFiles.length}</td>
+                        <td><span class="status ${statusClass}">${status}</span></td>
+                        <td>
+                            <button onclick="toggleUserStatus('${user.email}')" style="background: ${user.isActive ? 'var(--warning-color)' : 'var(--success-color)'}; color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; margin-left: 5px;">
+                                <i class="fas fa-${user.isActive ? 'ban' : 'check'}"></i>
+                            </button>
+                            <button onclick="deleteUser('${user.email}')" style="background: var(--error-color); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer;">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
-                    `;
-                    tbody.appendChild(tr);
-                }
+                    </tr>
+                `;
             });
+            
+            tbody.innerHTML = html;
         }
 
-        // تحميل جميع الملفات
         function loadAllFiles() {
             const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-            const sharedFiles = JSON.parse(localStorage.getItem('sharedFiles')) || [];
             const tbody = document.getElementById('all-files-body');
-            tbody.innerHTML = '';
             
-            // عرض الملفات المشتركة
-            sharedFiles.forEach(file => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><i class="fas fa-file"></i> ${file.name}</td>
-                    <td>${file.uploadedBy}</td>
-                    <td>${file.type}</td>
-                    <td>${file.size}</td>
-                    <td>${new Date(file.uploadedAt).toLocaleDateString('ar-SA')}</td>
-                    <td>
-                        <button class="file-action-btn download-btn" onclick="ownerDownloadFile('${file.id}', true)" style="padding: 5px 10px; margin: 2px;">
-                            <i class="fas fa-download"></i>
-                        </button>
-                        <button class="file-action-btn delete-btn" onclick="ownerDeleteFile('${file.id}', true)" style="padding: 5px 10px; margin: 2px;">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-            
-            // عرض ملفات المستخدمين
+            let allFiles = [];
             users.forEach(user => {
-                if (!user.isOwner && user.files) {
-                    user.files.forEach(file => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td><i class="fas fa-file"></i> ${file.name}</td>
-                            <td>${user.name}</td>
-                            <td>${file.type}</td>
-                            <td>${file.size}</td>
-                            <td>${new Date(file.uploadedAt).toLocaleDateString('ar-SA')}</td>
-                            <td>
-                                <button class="file-action-btn download-btn" onclick="ownerDownloadFile('${file.id}', false, ${user.id})" style="padding: 5px 10px; margin: 2px;">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                                <button class="file-action-btn delete-btn" onclick="ownerDeleteFile('${file.id}', false, ${user.id})" style="padding: 5px 10px; margin: 2px;">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
+                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                userFiles.forEach(file => {
+                    allFiles.push({
+                        ...file,
+                        owner: user.name,
+                        ownerEmail: user.email
                     });
-                }
+                });
             });
-        }
-
-        // تحميل الملف من لوحة المالك
-        function ownerDownloadFile(fileId, isShared, userId) {
-            if (isShared) {
-                const sharedFiles = JSON.parse(localStorage.getItem('sharedFiles')) || [];
-                const file = sharedFiles.find(f => f.id === fileId);
-                if (file) downloadFile(file);
-            } else if (userId) {
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-                const user = users.find(u => u.id === userId);
-                if (user && user.files) {
-                    const file = user.files.find(f => f.id === fileId);
-                    if (file) downloadFile(file);
-                }
-            }
-        }
-
-        // حذف الملف من لوحة المالك
-        function ownerDeleteFile(fileId, isShared, userId) {
-            if (confirm('هل أنت متأكد من حذف هذا الملف؟')) {
-                if (isShared) {
-                    const sharedFiles = JSON.parse(localStorage.getItem('sharedFiles')) || [];
-                    const updatedFiles = sharedFiles.filter(f => f.id !== fileId);
-                    localStorage.setItem('sharedFiles', JSON.stringify(updatedFiles));
-                } else if (userId) {
-                    const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-                    const userIndex = users.findIndex(u => u.id === userId);
-                    if (userIndex !== -1) {
-                        const fileIndex = users[userIndex].files.findIndex(f => f.id === fileId);
-                        if (fileIndex !== -1) {
-                            users[userIndex].files.splice(fileIndex, 1);
-                            localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-                        }
-                    }
-                }
-                loadAllFiles();
-                alert('تم حذف الملف بنجاح');
-            }
-        }
-
-        // تحميل إعدادات النظام
-        function loadSystemSettings() {
-            const settings = JSON.parse(localStorage.getItem('systemSettings')) || {
-                systemName: "نظام التخزين الآمن",
-                maxFileSize: 100,
-                userStorageLimit: 100,
-                allowRegistration: true
-            };
             
-            document.getElementById('system-name').value = settings.systemName;
-            document.getElementById('max-file-size').value = settings.maxFileSize;
-            document.getElementById('user-storage-limit').value = settings.userStorageLimit;
-            document.getElementById('allow-registration').checked = settings.allowRegistration;
+            if (allFiles.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <div class="empty-state" style="padding: 0;">
+                                <i class="fas fa-file" style="font-size: 2rem;"></i>
+                                <p>لا توجد ملفات</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
             
-            // حفظ الإعدادات
+            let html = '';
+            allFiles.forEach(file => {
+                html += `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="${getFileIcon(file.type)}" style="color: var(--secondary-color);"></i>
+                                ${file.name.length > 30 ? file.name.substring(0, 30) + '...' : file.name}
+                            </div>
+                        </td>
+                        <td>${file.owner}</td>
+                        <td>${file.type}</td>
+                        <td>${file.size} ميغابايت</td>
+                        <td>${file.date}</td>
+                        <td>
+                            <button onclick="downloadFile('${file.ownerEmail}', ${file.id})" style="background: var(--primary-color); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; margin-left: 5px;">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button onclick="deleteFile('${file.ownerEmail}', ${file.id})" style="background: var(--error-color); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        function setupSystemSettings() {
+            const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+            
+            document.getElementById('system-name').value = settings.systemName || 'نظام التخزين الآمن';
+            document.getElementById('max-file-size').value = settings.maxFileSize || 100;
+            document.getElementById('user-storage-limit').value = settings.userStorageLimit || 100;
+            document.getElementById('allow-registration').checked = settings.allowRegistration !== false;
+            document.getElementById('enable-encryption').checked = settings.enableEncryption !== false;
+            
             document.getElementById('save-system-settings').addEventListener('click', function() {
-                const updatedSettings = {
+                const newSettings = {
                     systemName: document.getElementById('system-name').value,
                     maxFileSize: parseInt(document.getElementById('max-file-size').value),
                     userStorageLimit: parseInt(document.getElementById('user-storage-limit').value),
-                    allowRegistration: document.getElementById('allow-registration').checked
+                    allowRegistration: document.getElementById('allow-registration').checked,
+                    enableEncryption: document.getElementById('enable-encryption').checked
                 };
                 
-                localStorage.setItem('systemSettings', JSON.stringify(updatedSettings));
+                localStorage.setItem('systemSettings', JSON.stringify(newSettings));
                 
-                const messageDiv = document.getElementById('settings-message');
-                messageDiv.textContent = 'تم حفظ الإعدادات بنجاح';
-                messageDiv.className = 'message success';
+                const messageElement = document.getElementById('settings-message');
+                showMessage(messageElement, 'تم حفظ الإعدادات بنجاح', 'success');
                 
+                // إعادة تحميل الإحصائيات
                 setTimeout(() => {
-                    messageDiv.textContent = '';
-                    messageDiv.className = 'message';
-                }, 3000);
+                    loadOwnerOverview();
+                }, 1000);
             });
         }
 
-        // حذف المستخدم (وظيفة مساعدة)
-        function deleteUser(userId) {
-            if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
-                let users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-                users = users.filter(user => user.id !== userId);
+        // وظائف عامة
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            showPage('login-page');
+            document.getElementById('login-form').reset();
+            document.getElementById('register-form').reset();
+            
+            // إضافة تأثير عند الخروج
+            document.getElementById('login-page').style.animation = 'fadeIn 0.5s ease';
+        }
+
+        function showNotification(message, type = 'info') {
+            // إنشاء عنصر الإشعار
+            const notification = document.createElement('div');
+            notification.className = `message ${type}`;
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.left = '20px';
+            notification.style.right = '20px';
+            notification.style.zIndex = '9999';
+            notification.style.maxWidth = '500px';
+            notification.style.margin = '0 auto';
+            notification.style.boxShadow = 'var(--shadow-lg)';
+            
+            document.body.appendChild(notification);
+            
+            // إزالة الإشعار بعد 4 ثواني
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 500);
+            }, 4000);
+        }
+
+        function showMessage(element, text, type) {
+            element.textContent = text;
+            element.className = `message ${type}`;
+            
+            setTimeout(() => {
+                element.textContent = '';
+                element.className = 'message';
+            }, 5000);
+        }
+
+        // وظائف المالك
+        window.toggleUserStatus = function(email) {
+            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const userIndex = users.findIndex(u => u.email === email);
+            
+            if (userIndex !== -1) {
+                users[userIndex].isActive = !users[userIndex].isActive;
                 localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-                loadUsersManagement();
-                loadOverviewStats();
+                
+                showNotification(`تم ${users[userIndex].isActive ? 'تفعيل' : 'تعطيل'} حساب المستخدم`, 'success');
+                
+                // إعادة تحميل البيانات
+                loadAllUsers();
+                loadOwnerOverview();
             }
+        };
+
+        window.deleteUser = function(email) {
+            if (confirm(`هل أنت متأكد من حذف المستخدم ${email}؟\n\nسيتم حذف جميع ملفاته ولا يمكن التراجع عن هذا الإجراء.`)) {
+                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+                const filteredUsers = users.filter(u => u.email !== email);
+                localStorage.setItem('secureStorageUsers', JSON.stringify(filteredUsers));
+                
+                // حذف ملفات المستخدم
+                localStorage.removeItem(`userFiles_${email}`);
+                localStorage.removeItem(`userFolders_${email}`);
+                
+                // إعادة تحميل البيانات
+                loadOwnerOverview();
+                loadAllUsers();
+                loadAllFiles();
+                
+                showNotification('تم حذف المستخدم بنجاح', 'success');
+            }
+        };
+
+        window.downloadFile = function(ownerEmail, fileId) {
+            showNotification('جاري تحميل الملف...', 'info');
+            // في تطبيق حقيقي، هنا يتم تنزيل الملف
+        };
+
+        window.deleteFile = function(ownerEmail, fileId) {
+            if (confirm('هل أنت متأكد من حذف هذا الملف؟')) {
+                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${ownerEmail}`)) || [];
+                const filteredFiles = userFiles.filter(f => f.id !== fileId);
+                localStorage.setItem(`userFiles_${ownerEmail}`, JSON.stringify(filteredFiles));
+                
+                // تحديث تخزين المستخدم
+                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+                const userIndex = users.findIndex(u => u.email === ownerEmail);
+                if (userIndex !== -1) {
+                    const deletedFile = userFiles.find(f => f.id === fileId);
+                    if (deletedFile) {
+                        users[userIndex].storageUsed = Math.max(0, (users[userIndex].storageUsed || 0) - parseFloat(deletedFile.size));
+                        localStorage.setItem('secureStorageUsers', JSON.stringify(users));
+                    }
+                }
+                
+                showNotification('تم حذف الملف بنجاح', 'success');
+                
+                // إعادة تحميل البيانات
+                loadAllFiles();
+                loadOwnerOverview();
+            }
+        };
+
+        function exportUsers() {
+            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const regularUsers = users.filter(u => !u.isOwner);
+            
+            if (regularUsers.length === 0) {
+                showNotification('لا توجد بيانات للتصدير', 'error');
+                return;
+            }
+            
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "الاسم,البريد الإلكتروني,تاريخ التسجيل,عدد الملفات,التخزين المستخدم,الحالة\n"
+                + regularUsers.map(user => {
+                    const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                    return [
+                        `"${user.name}"`,
+                        `"${user.email}"`,
+                        `"${new Date(user.createdAt).toLocaleDateString('ar-SA')}"`,
+                        userFiles.length,
+                        `${user.storageUsed || 0} ميغابايت`,
+                        user.isActive ? 'نشط' : 'معطل'
+                    ].join(',');
+                }).join('\n');
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "المستخدمين_" + new Date().toISOString().split('T')[0] + ".csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('تم تصدير بيانات المستخدمين بنجاح', 'success');
+        }
+
+        function exportFiles() {
+            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            
+            let allFiles = [];
+            users.forEach(user => {
+                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                userFiles.forEach(file => {
+                    allFiles.push({
+                        ...file,
+                        owner: user.name,
+                        ownerEmail: user.email
+                    });
+                });
+            });
+            
+            if (allFiles.length === 0) {
+                showNotification('لا توجد بيانات للتصدير', 'error');
+                return;
+            }
+            
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "اسم الملف,المالك,البريد الإلكتروني,النوع,الحجم,تاريخ الرفع\n"
+                + allFiles.map(file => {
+                    return [
+                        `"${file.name}"`,
+                        `"${file.owner}"`,
+                        `"${file.ownerEmail}"`,
+                        `"${file.type}"`,
+                        `${file.size} ميغابايت`,
+                        `"${file.date}"`
+                    ].join(',');
+                }).join('\n');
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "الملفات_" + new Date().toISOString().split('T')[0] + ".csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('تم تصدير بيانات الملفات بنجاح', 'success');
         }
     </script>
 </body>
