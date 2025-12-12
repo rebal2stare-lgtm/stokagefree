@@ -904,6 +904,23 @@
             font-size: 1.1rem;
             line-height: 1.6;
         }
+        
+        /* تنسيقات شريط التقدم أثناء الرفع */
+        .upload-progress-container {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .file-upload-progress {
+            margin: 15px 0;
+        }
+        
+        .file-upload-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -983,22 +1000,6 @@
                         <div class="message" id="register-message"></div>
                     </div>
                 </form>
-                
-                <div class="owner-access glass-effect" style="margin-top: 25px; padding: 20px; border-radius: var(--radius-lg);">
-                    <h3 style="display: flex; align-items: center; gap: 12px; color: var(--secondary-color); margin-bottom: 15px;">
-                        <i class="fas fa-crown"></i> وصول خاص للمالك
-                    </h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div>
-                            <strong><i class="fas fa-envelope"></i> البريد:</strong>
-                            <p style="margin-top: 5px;">admin@admin.com</p>
-                        </div>
-                        <div>
-                            <strong><i class="fas fa-key"></i> كلمة المرور:</strong>
-                            <p style="margin-top: 5px;">admin123</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -1092,6 +1093,18 @@
                         <button class="submit-btn" id="start-upload" style="margin-top: 30px;">
                             <i class="fas fa-upload"></i> بدء الرفع
                         </button>
+                    </div>
+                    
+                    <!-- شريط تقدم الرفع -->
+                    <div class="upload-progress-container" id="upload-progress-container">
+                        <h3 style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                            <i class="fas fa-spinner fa-spin"></i> جاري رفع الملفات
+                        </h3>
+                        <div class="progress-bar">
+                            <div id="overall-progress-bar" class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <p id="overall-progress-text" style="text-align: center; margin-top: 10px; font-weight: 600;">0%</p>
+                        <div id="files-progress-details"></div>
                     </div>
                 </section>
                 
@@ -1288,6 +1301,9 @@
                             <button class="action-btn" id="export-files">
                                 <i class="fas fa-download"></i> تصدير
                             </button>
+                            <button class="action-btn" id="download-all-files" style="background: var(--success-color);">
+                                <i class="fas fa-download"></i> تحميل الكل
+                            </button>
                         </div>
                     </div>
                     
@@ -1353,89 +1369,246 @@
     </div>
 
     <script>
-        // تهيئة التطبيق
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-        });
-
-        function initializeApp() {
-            // تهيئة بيانات التخزين إذا لم تكن موجودة
-            if (!localStorage.getItem('secureStorageUsers')) {
-                const defaultUsers = [
-                    {
-                        id: 1,
-                        name: "أحمد محمد",
-                        email: "ahmed@example.com",
-                        password: "123456",
-                        createdAt: new Date().toISOString(),
-                        files: [],
-                        storageUsed: 15.2,
-                        isActive: true
-                    },
-                    {
-                        id: 2,
-                        name: "سارة عبدالله",
-                        email: "sara@example.com",
-                        password: "123456",
-                        createdAt: new Date().toISOString(),
-                        files: [],
-                        storageUsed: 8.5,
-                        isActive: true
-                    },
-                    {
-                        id: 0,
-                        name: "مالك النظام",
-                        email: "admin@admin.com",
-                        password: "admin123",
-                        createdAt: new Date().toISOString(),
-                        files: [],
-                        storageUsed: 0,
-                        isOwner: true,
-                        isActive: true
-                    }
-                ];
-                localStorage.setItem('secureStorageUsers', JSON.stringify(defaultUsers));
+        // ============================================
+        // محاكاة قاعدة البيانات (بدلاً من سيرفر حقيقي)
+        // ============================================
+        class SecureStorageDatabase {
+            constructor() {
+                this.initDatabase();
             }
-
-            if (!localStorage.getItem('systemSettings')) {
-                const defaultSettings = {
-                    systemName: "نظام التخزين الآمن",
-                    maxFileSize: 100,
-                    userStorageLimit: 100,
-                    allowRegistration: true,
-                    enableEncryption: true
-                };
-                localStorage.setItem('systemSettings', JSON.stringify(defaultSettings));
-            }
-
-            // استعادة المستخدم الحالي
-            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-            if (currentUser) {
-                if (currentUser.isOwner) {
-                    showPage('owner-page');
-                    loadOwnerDashboard();
-                } else {
-                    showPage('dashboard-page');
-                    loadUserDashboard(currentUser);
+            
+            initDatabase() {
+                // تخزين المستخدمين
+                if (!localStorage.getItem('secureStorageUsers')) {
+                    const defaultUsers = [
+                        {
+                            id: 1,
+                            name: "أحمد محمد",
+                            email: "ahmed@example.com",
+                            password: "123456",
+                            createdAt: new Date().toISOString(),
+                            files: [],
+                            storageUsed: 15.2,
+                            isActive: true
+                        },
+                        {
+                            id: 2,
+                            name: "سارة عبدالله",
+                            email: "sara@example.com",
+                            password: "123456",
+                            createdAt: new Date().toISOString(),
+                            files: [],
+                            storageUsed: 8.5,
+                            isActive: true
+                        },
+                        {
+                            id: 0,
+                            name: "مالك النظام",
+                            email: "admin@admin.com",
+                            password: "admin123",
+                            createdAt: new Date().toISOString(),
+                            files: [],
+                            storageUsed: 0,
+                            isOwner: true,
+                            isActive: true
+                        }
+                    ];
+                    localStorage.setItem('secureStorageUsers', JSON.stringify(defaultUsers));
+                }
+                
+                // تخزين الملفات الأصلية (محاكاة للسيرفر)
+                if (!localStorage.getItem('secureStorageServerFiles')) {
+                    localStorage.setItem('secureStorageServerFiles', JSON.stringify([]));
+                }
+                
+                // إعدادات النظام
+                if (!localStorage.getItem('systemSettings')) {
+                    const defaultSettings = {
+                        systemName: "نظام التخزين الآمن",
+                        maxFileSize: 100,
+                        userStorageLimit: 100,
+                        allowRegistration: true,
+                        enableEncryption: true,
+                        serverUrl: "https://api.secure-storage.com",
+                        maxUsers: 1000,
+                        backupEnabled: true
+                    };
+                    localStorage.setItem('systemSettings', JSON.stringify(defaultSettings));
                 }
             }
-
-            // إعداد واجهة تسجيل الدخول
-            setupLoginPage();
+            
+            // المستخدمين
+            getUsers() {
+                return JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            }
+            
+            saveUsers(users) {
+                localStorage.setItem('secureStorageUsers', JSON.stringify(users));
+            }
+            
+            // الملفات على السيرفر
+            getServerFiles() {
+                return JSON.parse(localStorage.getItem('secureStorageServerFiles')) || [];
+            }
+            
+            saveServerFiles(files) {
+                localStorage.setItem('secureStorageServerFiles', JSON.stringify(files));
+            }
+            
+            // الإعدادات
+            getSettings() {
+                return JSON.parse(localStorage.getItem('systemSettings')) || {};
+            }
+            
+            saveSettings(settings) {
+                localStorage.setItem('systemSettings', JSON.stringify(settings));
+            }
+            
+            // البحث عن ملف بواسطة معرفه
+            findFileById(fileId) {
+                const files = this.getServerFiles();
+                return files.find(file => file.id === fileId);
+            }
+            
+            // البحث عن ملفات مستخدم
+            getUserFiles(userEmail) {
+                const files = this.getServerFiles();
+                return files.filter(file => file.ownerEmail === userEmail);
+            }
+            
+            // إضافة ملف جديد للسيرفر
+            addFileToServer(fileData) {
+                const files = this.getServerFiles();
+                const newFile = {
+                    id: 'file_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    ...fileData,
+                    uploadedAt: new Date().toISOString(),
+                    originalFile: true, // مؤشر أن هذا الملف الأصلي
+                    downloadCount: 0
+                };
+                files.push(newFile);
+                this.saveServerFiles(files);
+                return newFile;
+            }
+            
+            // تحديث مستخدم
+            updateUser(email, updates) {
+                const users = this.getUsers();
+                const index = users.findIndex(u => u.email === email);
+                if (index !== -1) {
+                    users[index] = { ...users[index], ...updates };
+                    this.saveUsers(users);
+                    return users[index];
+                }
+                return null;
+            }
+            
+            // حذف ملف من السيرفر
+            deleteFileFromServer(fileId) {
+                const files = this.getServerFiles();
+                const filteredFiles = files.filter(file => file.id !== fileId);
+                this.saveServerFiles(filteredFiles);
+                return files.length !== filteredFiles.length;
+            }
+            
+            // زيادة عداد التحميل
+            incrementDownloadCount(fileId) {
+                const files = this.getServerFiles();
+                const fileIndex = files.findIndex(file => file.id === fileId);
+                if (fileIndex !== -1) {
+                    files[fileIndex].downloadCount = (files[fileIndex].downloadCount || 0) + 1;
+                    this.saveServerFiles(files);
+                }
+            }
         }
 
+        // إنشاء مثيل قاعدة البيانات
+        const database = new SecureStorageDatabase();
+
+        // ============================================
+        // وظائف مساعدة
+        // ============================================
+        function getFileIcon(fileType) {
+            switch(fileType.toLowerCase()) {
+                case 'pdf': return 'fas fa-file-pdf';
+                case 'صورة': case 'image': return 'fas fa-file-image';
+                case 'فيديو': case 'video': return 'fas fa-file-video';
+                case 'صوت': case 'audio': return 'fas fa-file-audio';
+                case 'مستند': case 'document': case 'word': return 'fas fa-file-word';
+                case 'مضغوط': case 'compressed': case 'zip': return 'fas fa-file-archive';
+                case 'spreadsheet': case 'excel': return 'fas fa-file-excel';
+                default: return 'fas fa-file';
+            }
+        }
+
+        function getFileType(fileName) {
+            const extension = fileName.split('.').pop().toLowerCase();
+            const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+            const videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv'];
+            const audioExtensions = ['mp3', 'wav', 'ogg', 'm4a', 'flac'];
+            const documentExtensions = ['doc', 'docx', 'txt', 'rtf', 'odt'];
+            const pdfExtensions = ['pdf'];
+            const spreadsheetExtensions = ['xls', 'xlsx', 'csv', 'ods'];
+            const compressedExtensions = ['zip', 'rar', '7z', 'tar', 'gz'];
+            
+            if (imageExtensions.includes(extension)) return 'صورة';
+            if (videoExtensions.includes(extension)) return 'فيديو';
+            if (audioExtensions.includes(extension)) return 'صوت';
+            if (documentExtensions.includes(extension)) return 'مستند';
+            if (pdfExtensions.includes(extension)) return 'PDF';
+            if (spreadsheetExtensions.includes(extension)) return 'جدول بيانات';
+            if (compressedExtensions.includes(extension)) return 'مضغوط';
+            return 'ملف';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 بايت';
+            const k = 1024;
+            const sizes = ['بايت', 'كيلوبايت', 'ميغابايت', 'جيجابايت'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `message ${type}`;
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.left = '20px';
+            notification.style.zIndex = '9999';
+            notification.style.maxWidth = '500px';
+            notification.style.margin = '0 auto';
+            notification.style.boxShadow = 'var(--shadow-lg)';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 500);
+            }, 4000);
+        }
+
+        // ============================================
         // إدارة الصفحات
+        // ============================================
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
             document.getElementById(pageId).classList.add('active');
-            
-            // إضافة تأثير عند تغيير الصفحة
             document.getElementById(pageId).style.animation = 'fadeIn 0.5s ease';
         }
 
+        // ============================================
         // تسجيل الدخول وإنشاء الحساب
+        // ============================================
         function setupLoginPage() {
             const loginTab = document.getElementById('login-tab');
             const registerTab = document.getElementById('register-tab');
@@ -1460,9 +1633,6 @@
             });
 
             // إظهار/إخفاء كلمة المرور
-            setupPasswordToggle('toggle-login-password', 'login-password');
-            setupPasswordToggle('toggle-register-password', 'register-password');
-
             function setupPasswordToggle(toggleId, passwordId) {
                 const toggle = document.getElementById(toggleId);
                 const passwordInput = document.getElementById(passwordId);
@@ -1479,13 +1649,16 @@
                 });
             }
 
+            setupPasswordToggle('toggle-login-password', 'login-password');
+            setupPasswordToggle('toggle-register-password', 'register-password');
+
             // تسجيل الدخول
             document.getElementById('login-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 const email = document.getElementById('login-email').value.trim();
                 const password = document.getElementById('login-password').value;
                 
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+                const users = database.getUsers();
                 const user = users.find(u => u.email === email && u.password === password);
                 
                 if (user) {
@@ -1540,13 +1713,13 @@
                     return;
                 }
                 
-                const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+                const settings = database.getSettings();
                 if (!settings.allowRegistration) {
                     showMessage(registerMessage, 'التسجيل غير متاح حالياً، يرجى المحاولة لاحقاً', 'error');
                     return;
                 }
                 
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+                const users = database.getUsers();
                 
                 // التحقق من عدم تكرار البريد الإلكتروني
                 if (users.some(u => u.email === email)) {
@@ -1567,7 +1740,7 @@
                 };
                 
                 users.push(newUser);
-                localStorage.setItem('secureStorageUsers', JSON.stringify(users));
+                database.saveUsers(users);
                 
                 showMessage(registerMessage, 'تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن', 'success');
                 
@@ -1590,7 +1763,9 @@
             }
         }
 
+        // ============================================
         // لوحة تحكم المستخدم
+        // ============================================
         function loadUserDashboard(user) {
             // تحديث المعلومات
             document.getElementById('user-name-display').textContent = user.name;
@@ -1653,7 +1828,7 @@
 
         function loadUserFiles(user) {
             const filesGrid = document.getElementById('files-grid');
-            const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+            const userFiles = database.getUserFiles(user.email);
             
             if (userFiles.length === 0) {
                 filesGrid.innerHTML = `
@@ -1668,17 +1843,18 @@
             
             let html = '';
             userFiles.forEach(file => {
-                const fileType = file.type || getFileExtension(file.name);
+                const fileType = getFileType(file.name);
                 const icon = getFileIcon(fileType);
                 
                 html += `
-                    <div class="file-card hover-lift">
+                    <div class="file-card hover-lift" onclick="downloadUserFile('${file.id}')">
                         <div class="file-icon">
                             <i class="${icon}"></i>
                         </div>
                         <h4>${file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name}</h4>
-                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 5px 0;">${file.size} ميغابايت</p>
-                        <p style="color: var(--text-secondary); font-size: 0.8rem;">${file.date}</p>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 5px 0;">${file.size}</p>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem;">${new Date(file.uploadedAt).toLocaleDateString('ar-SA')}</p>
+                        ${file.originalFile ? '<span style="background: var(--primary-color); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; margin-top: 5px;">أصلي</span>' : ''}
                     </div>
                 `;
             });
@@ -1726,7 +1902,7 @@
 
         function updateStorageInfo(user) {
             const storageUsed = user.storageUsed || 0;
-            const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+            const settings = database.getSettings();
             const storageLimit = settings.userStorageLimit || 100;
             
             const percentage = Math.min((storageUsed / storageLimit) * 100, 100);
@@ -1741,6 +1917,7 @@
             const uploadQueue = document.getElementById('upload-queue');
             const queueList = document.getElementById('queue-list');
             const startUploadBtn = document.getElementById('start-upload');
+            const uploadProgressContainer = document.getElementById('upload-progress-container');
             
             let filesToUpload = [];
             
@@ -1753,7 +1930,7 @@
             });
             
             function addFilesToQueue(files, user) {
-                const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+                const settings = database.getSettings();
                 const maxFileSize = settings.maxFileSize || 100;
                 
                 files.forEach(file => {
@@ -1778,14 +1955,14 @@
             function displayUploadQueue() {
                 let html = '';
                 filesToUpload.forEach((file, index) => {
-                    const size = (file.size / (1024 * 1024)).toFixed(2);
+                    const size = formatFileSize(file.size);
                     html += `
                         <div class="queue-item" id="queue-item-${index}">
                             <div>
                                 <i class="fas fa-file" style="margin-left: 10px;"></i>
                                 <strong>${file.name}</strong>
                                 <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">
-                                    ${size} ميغابايت • ${getFileType(file.type)}
+                                    ${size} • ${getFileType(file.name)}
                                 </p>
                             </div>
                             <div>
@@ -1799,6 +1976,7 @@
                 
                 queueList.innerHTML = html;
                 uploadQueue.style.display = 'block';
+                uploadProgressContainer.style.display = 'none';
             }
             
             window.removeFromQueue = function(index) {
@@ -1816,48 +1994,122 @@
                     return;
                 }
                 
-                // محاكاة رفع الملفات
-                let uploadedCount = 0;
-                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                // إخفاء قائمة الانتظار وإظهار شريط التقدم
+                uploadQueue.style.display = 'none';
+                uploadProgressContainer.style.display = 'block';
                 
-                filesToUpload.forEach(file => {
-                    const fileSize = (file.size / (1024 * 1024)).toFixed(2);
-                    const newFile = {
-                        id: Date.now() + Math.random(),
-                        name: file.name,
-                        size: fileSize,
-                        type: getFileType(file.type),
-                        date: new Date().toLocaleDateString('ar-SA'),
-                        folder: 'الملفات العامة'
-                    };
-                    
-                    userFiles.push(newFile);
-                    uploadedCount++;
+                const overallProgressBar = document.getElementById('overall-progress-bar');
+                const overallProgressText = document.getElementById('overall-progress-text');
+                const filesProgressDetails = document.getElementById('files-progress-details');
+                
+                overallProgressBar.style.width = '0%';
+                overallProgressText.textContent = '0%';
+                filesProgressDetails.innerHTML = '';
+                
+                // إنشاء شريط تقدم لكل ملف
+                filesToUpload.forEach((file, index) => {
+                    const fileProgress = document.createElement('div');
+                    fileProgress.className = 'file-upload-progress';
+                    fileProgress.innerHTML = `
+                        <div class="file-upload-info">
+                            <span>${file.name}</span>
+                            <span class="file-progress-text-${index}">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="file-progress-bar-${index}" style="width: 0%;"></div>
+                        </div>
+                    `;
+                    filesProgressDetails.appendChild(fileProgress);
                 });
                 
-                // تحديث تخزين المستخدم
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-                const userIndex = users.findIndex(u => u.email === user.email);
-                if (userIndex !== -1) {
-                    users[userIndex].storageUsed += filesToUpload.reduce((total, file) => 
-                        total + (file.size / (1024 * 1024)), 0);
-                    localStorage.setItem('secureStorageUsers', JSON.stringify(users));
+                // محاكاة رفع الملفات إلى السيرفر
+                let uploadedCount = 0;
+                const totalFiles = filesToUpload.length;
+                let totalSize = 0;
+                let uploadedSize = 0;
+                
+                filesToUpload.forEach(file => {
+                    totalSize += file.size;
+                });
+                
+                filesToUpload.forEach((file, index) => {
+                    // محاكاة رفع الملف مع تحديث التقدم
+                    const fileSize = file.size;
+                    let uploaded = 0;
+                    const interval = setInterval(() => {
+                        uploaded += fileSize / 20; // 5% كل مرة
+                        if (uploaded >= fileSize) {
+                            uploaded = fileSize;
+                            clearInterval(interval);
+                            uploadedCount++;
+                            
+                            // تحديث تقدم الملف
+                            document.getElementById(`file-progress-bar-${index}`).style.width = '100%';
+                            document.querySelector(`.file-progress-text-${index}`).textContent = '100%';
+                            
+                            uploadedSize += fileSize;
+                            const overallProgress = (uploadedSize / totalSize) * 100;
+                            overallProgressBar.style.width = `${overallProgress}%`;
+                            overallProgressText.textContent = `${Math.round(overallProgress)}%`;
+                            
+                            // عند اكتمال رفع جميع الملفات
+                            if (uploadedCount === totalFiles) {
+                                completeUpload(user);
+                            }
+                        } else {
+                            const progress = (uploaded / fileSize) * 100;
+                            document.getElementById(`file-progress-bar-${index}`).style.width = `${progress}%`;
+                            document.querySelector(`.file-progress-text-${index}`).textContent = `${Math.round(progress)}%`;
+                            
+                            uploadedSize += fileSize / 20;
+                            const overallProgress = (uploadedSize / totalSize) * 100;
+                            overallProgressBar.style.width = `${overallProgress}%`;
+                            overallProgressText.textContent = `${Math.round(overallProgress)}%`;
+                        }
+                    }, 200);
                     
-                    // تحديث الجلسة
-                    const updatedUser = users[userIndex];
-                    sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                    // تخزين الملف في قاعدة البيانات (محاكاة للسيرفر)
+                    setTimeout(() => {
+                        const fileData = {
+                            name: file.name,
+                            size: formatFileSize(file.size),
+                            type: getFileType(file.name),
+                            owner: user.name,
+                            ownerEmail: user.email,
+                            content: "محتوى الملف المحفوظ على السيرفر", // في التطبيق الحقيقي، هذا سيكون محتوى الملف الفعلي
+                            encrypted: database.getSettings().enableEncryption
+                        };
+                        
+                        database.addFileToServer(fileData);
+                    }, 2000);
+                });
+                
+                function completeUpload(user) {
+                    // تحديث تخزين المستخدم
+                    const users = database.getUsers();
+                    const userIndex = users.findIndex(u => u.email === user.email);
+                    if (userIndex !== -1) {
+                        users[userIndex].storageUsed += filesToUpload.reduce((total, file) => 
+                            total + (file.size / (1024 * 1024)), 0);
+                        database.saveUsers(users);
+                        
+                        // تحديث الجلسة
+                        const updatedUser = users[userIndex];
+                        sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                    }
+                    
+                    showNotification(`تم رفع ${uploadedCount} ملف بنجاح إلى السيرفر`, 'success');
+                    
+                    setTimeout(() => {
+                        uploadProgressContainer.style.display = 'none';
+                        filesToUpload = [];
+                        fileInput.value = '';
+                        
+                        // تحديث العرض
+                        loadUserFiles(user);
+                        updateStorageInfo(user);
+                    }, 2000);
                 }
-                
-                localStorage.setItem(`userFiles_${user.email}`, JSON.stringify(userFiles));
-                
-                showNotification(`تم رفع ${uploadedCount} ملف بنجاح`, 'success');
-                filesToUpload = [];
-                uploadQueue.style.display = 'none';
-                fileInput.value = '';
-                
-                // تحديث العرض
-                loadUserFiles(user);
-                updateStorageInfo(user);
             });
         }
 
@@ -1903,33 +2155,6 @@
             });
         }
 
-        function getFileType(fileType) {
-            if (!fileType) return 'غير معروف';
-            if (fileType.includes('pdf')) return 'PDF';
-            if (fileType.includes('image')) return 'صورة';
-            if (fileType.includes('video')) return 'فيديو';
-            if (fileType.includes('audio')) return 'صوت';
-            if (fileType.includes('text') || fileType.includes('document')) return 'مستند';
-            if (fileType.includes('zip') || fileType.includes('compressed')) return 'مضغوط';
-            return 'ملف';
-        }
-
-        function getFileIcon(fileType) {
-            switch(fileType.toLowerCase()) {
-                case 'pdf': return 'fas fa-file-pdf';
-                case 'صورة': return 'fas fa-file-image';
-                case 'فيديو': return 'fas fa-file-video';
-                case 'صوت': return 'fas fa-file-audio';
-                case 'مستند': return 'fas fa-file-word';
-                case 'مضغوط': return 'fas fa-file-archive';
-                default: return 'fas fa-file';
-            }
-        }
-
-        function getFileExtension(filename) {
-            return filename.split('.').pop().toLowerCase();
-        }
-
         function createNewFolder(user) {
             const folderName = prompt('أدخل اسم المجلد الجديد:', 'مجلد جديد');
             if (folderName && folderName.trim()) {
@@ -1953,7 +2178,7 @@
             const confirmNewPassword = document.getElementById('confirm-new-password').value;
             const messageElement = document.getElementById('profile-message');
             
-            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const users = database.getUsers();
             const userIndex = users.findIndex(u => u.email === user.email);
             
             if (userIndex === -1) {
@@ -2008,7 +2233,7 @@
             }
             
             if (hasChanges) {
-                localStorage.setItem('secureStorageUsers', JSON.stringify(users));
+                database.saveUsers(users);
                 
                 // تحديث الجلسة
                 const updatedUser = users[userIndex];
@@ -2034,7 +2259,9 @@
             }
         }
 
+        // ============================================
         // لوحة تحكم المالك
+        // ============================================
         function loadOwnerDashboard() {
             setupOwnerMenu();
             loadOwnerOverview();
@@ -2047,6 +2274,7 @@
             // إعداد أزرار التصدير
             document.getElementById('export-users').addEventListener('click', exportUsers);
             document.getElementById('export-files').addEventListener('click', exportFiles);
+            document.getElementById('download-all-files').addEventListener('click', downloadAllFiles);
         }
 
         function setupOwnerMenu() {
@@ -2068,27 +2296,25 @@
         }
 
         function loadOwnerOverview() {
-            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const users = database.getUsers();
             const regularUsers = users.filter(u => !u.isOwner);
-            const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+            const settings = database.getSettings();
+            const allFiles = database.getServerFiles();
             
             // تحديث الإحصائيات
             document.getElementById('total-users-count').textContent = regularUsers.length;
+            document.getElementById('total-files-count').textContent = allFiles.length;
             
-            let totalFiles = 0;
             let totalStorage = 0;
             let totalStorageLimit = 0;
             
             users.forEach(user => {
-                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
-                totalFiles += userFiles.length;
                 totalStorage += user.storageUsed || 0;
                 if (!user.isOwner) {
                     totalStorageLimit += settings.userStorageLimit || 100;
                 }
             });
             
-            document.getElementById('total-files-count').textContent = totalFiles;
             document.getElementById('total-storage-used').textContent = totalStorage.toFixed(1) + ' ميغابايت';
             
             const storagePercentage = totalStorageLimit > 0 ? ((totalStorage / totalStorageLimit) * 100).toFixed(1) : 0;
@@ -2108,7 +2334,7 @@
             let html = '';
             recentUsers.forEach(user => {
                 const date = new Date(user.createdAt).toLocaleDateString('ar-SA');
-                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                const userFiles = database.getUserFiles(user.email);
                 
                 html += `
                     <div class="queue-item">
@@ -2132,7 +2358,7 @@
         }
 
         function loadAllUsers() {
-            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const users = database.getUsers();
             const regularUsers = users.filter(u => !u.isOwner);
             const tbody = document.getElementById('users-table-body');
             
@@ -2152,7 +2378,7 @@
             
             let html = '';
             regularUsers.forEach(user => {
-                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                const userFiles = database.getUserFiles(user.email);
                 const date = new Date(user.createdAt).toLocaleDateString('ar-SA');
                 const status = user.isActive ? 'نشط' : 'معطل';
                 const statusClass = user.isActive ? 'active' : 'pending';
@@ -2187,20 +2413,8 @@
         }
 
         function loadAllFiles() {
-            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const allFiles = database.getServerFiles();
             const tbody = document.getElementById('all-files-body');
-            
-            let allFiles = [];
-            users.forEach(user => {
-                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
-                userFiles.forEach(file => {
-                    allFiles.push({
-                        ...file,
-                        owner: user.name,
-                        ownerEmail: user.email
-                    });
-                });
-            });
             
             if (allFiles.length === 0) {
                 tbody.innerHTML = `
@@ -2218,23 +2432,27 @@
             
             let html = '';
             allFiles.forEach(file => {
+                const icon = getFileIcon(getFileType(file.name));
+                const date = new Date(file.uploadedAt).toLocaleDateString('ar-SA');
+                
                 html += `
                     <tr>
                         <td>
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="${getFileIcon(file.type)}" style="color: var(--secondary-color);"></i>
+                                <i class="${icon}" style="color: var(--secondary-color);"></i>
                                 ${file.name.length > 30 ? file.name.substring(0, 30) + '...' : file.name}
+                                ${file.originalFile ? '<span style="background: var(--primary-color); color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem;">أصلي</span>' : ''}
                             </div>
                         </td>
                         <td>${file.owner}</td>
                         <td>${file.type}</td>
-                        <td>${file.size} ميغابايت</td>
-                        <td>${file.date}</td>
+                        <td>${file.size}</td>
+                        <td>${date}</td>
                         <td>
-                            <button onclick="downloadFile('${file.ownerEmail}', ${file.id})" style="background: var(--primary-color); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; margin-left: 5px;">
+                            <button onclick="downloadFileAsOwner('${file.id}')" style="background: var(--primary-color); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; margin-left: 5px;">
                                 <i class="fas fa-download"></i>
                             </button>
-                            <button onclick="deleteFile('${file.ownerEmail}', ${file.id})" style="background: var(--error-color); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer;">
+                            <button onclick="deleteFileAsOwner('${file.id}')" style="background: var(--error-color); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer;">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -2246,7 +2464,7 @@
         }
 
         function setupSystemSettings() {
-            const settings = JSON.parse(localStorage.getItem('systemSettings')) || {};
+            const settings = database.getSettings();
             
             document.getElementById('system-name').value = settings.systemName || 'نظام التخزين الآمن';
             document.getElementById('max-file-size').value = settings.maxFileSize || 100;
@@ -2260,10 +2478,13 @@
                     maxFileSize: parseInt(document.getElementById('max-file-size').value),
                     userStorageLimit: parseInt(document.getElementById('user-storage-limit').value),
                     allowRegistration: document.getElementById('allow-registration').checked,
-                    enableEncryption: document.getElementById('enable-encryption').checked
+                    enableEncryption: document.getElementById('enable-encryption').checked,
+                    serverUrl: settings.serverUrl || "https://api.secure-storage.com",
+                    maxUsers: settings.maxUsers || 1000,
+                    backupEnabled: settings.backupEnabled !== false
                 };
                 
-                localStorage.setItem('systemSettings', JSON.stringify(newSettings));
+                database.saveSettings(newSettings);
                 
                 const messageElement = document.getElementById('settings-message');
                 showMessage(messageElement, 'تم حفظ الإعدادات بنجاح', 'success');
@@ -2275,7 +2496,9 @@
             });
         }
 
+        // ============================================
         // وظائف عامة
+        // ============================================
         function logout() {
             sessionStorage.removeItem('currentUser');
             showPage('login-page');
@@ -2284,34 +2507,6 @@
             
             // إضافة تأثير عند الخروج
             document.getElementById('login-page').style.animation = 'fadeIn 0.5s ease';
-        }
-
-        function showNotification(message, type = 'info') {
-            // إنشاء عنصر الإشعار
-            const notification = document.createElement('div');
-            notification.className = `message ${type}`;
-            notification.textContent = message;
-            notification.style.position = 'fixed';
-            notification.style.top = '20px';
-            notification.style.left = '20px';
-            notification.style.right = '20px';
-            notification.style.zIndex = '9999';
-            notification.style.maxWidth = '500px';
-            notification.style.margin = '0 auto';
-            notification.style.boxShadow = 'var(--shadow-lg)';
-            
-            document.body.appendChild(notification);
-            
-            // إزالة الإشعار بعد 4 ثواني
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transition = 'opacity 0.5s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        document.body.removeChild(notification);
-                    }
-                }, 500);
-            }, 4000);
         }
 
         function showMessage(element, text, type) {
@@ -2324,14 +2519,16 @@
             }, 5000);
         }
 
+        // ============================================
         // وظائف المالك
+        // ============================================
         window.toggleUserStatus = function(email) {
-            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const users = database.getUsers();
             const userIndex = users.findIndex(u => u.email === email);
             
             if (userIndex !== -1) {
                 users[userIndex].isActive = !users[userIndex].isActive;
-                localStorage.setItem('secureStorageUsers', JSON.stringify(users));
+                database.saveUsers(users);
                 
                 showNotification(`تم ${users[userIndex].isActive ? 'تفعيل' : 'تعطيل'} حساب المستخدم`, 'success');
                 
@@ -2343,13 +2540,16 @@
 
         window.deleteUser = function(email) {
             if (confirm(`هل أنت متأكد من حذف المستخدم ${email}؟\n\nسيتم حذف جميع ملفاته ولا يمكن التراجع عن هذا الإجراء.`)) {
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+                const users = database.getUsers();
                 const filteredUsers = users.filter(u => u.email !== email);
-                localStorage.setItem('secureStorageUsers', JSON.stringify(filteredUsers));
+                database.saveUsers(filteredUsers);
                 
-                // حذف ملفات المستخدم
-                localStorage.removeItem(`userFiles_${email}`);
-                localStorage.removeItem(`userFolders_${email}`);
+                // حذف ملفات المستخدم من السيرفر
+                const allFiles = database.getServerFiles();
+                const userFiles = allFiles.filter(file => file.ownerEmail === email);
+                userFiles.forEach(file => {
+                    database.deleteFileFromServer(file.id);
+                });
                 
                 // إعادة تحميل البيانات
                 loadOwnerOverview();
@@ -2360,38 +2560,38 @@
             }
         };
 
-        window.downloadFile = function(ownerEmail, fileId) {
-            showNotification('جاري تحميل الملف...', 'info');
-            // في تطبيق حقيقي، هنا يتم تنزيل الملف
+        window.downloadFileAsOwner = function(fileId) {
+            const file = database.findFileById(fileId);
+            if (file) {
+                database.incrementDownloadCount(fileId);
+                showNotification(`جاري تحميل الملف: ${file.name}`, 'info');
+                
+                // محاكاة تحميل الملف الأصلي
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(`محتوى الملف الأصلي: ${file.name}\n\nهذا محاكاة لتحميل الملف الأصلي من السيرفر.\nالحجم: ${file.size}\nالنوع: ${file.type}\nالمالك: ${file.owner}\nتاريخ الرفع: ${new Date(file.uploadedAt).toLocaleDateString('ar-SA')}`);
+                    link.download = file.name;
+                    link.click();
+                    showNotification(`تم تحميل الملف: ${file.name}`, 'success');
+                }, 1000);
+            }
         };
 
-        window.deleteFile = function(ownerEmail, fileId) {
-            if (confirm('هل أنت متأكد من حذف هذا الملف؟')) {
-                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${ownerEmail}`)) || [];
-                const filteredFiles = userFiles.filter(f => f.id !== fileId);
-                localStorage.setItem(`userFiles_${ownerEmail}`, JSON.stringify(filteredFiles));
-                
-                // تحديث تخزين المستخدم
-                const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-                const userIndex = users.findIndex(u => u.email === ownerEmail);
-                if (userIndex !== -1) {
-                    const deletedFile = userFiles.find(f => f.id === fileId);
-                    if (deletedFile) {
-                        users[userIndex].storageUsed = Math.max(0, (users[userIndex].storageUsed || 0) - parseFloat(deletedFile.size));
-                        localStorage.setItem('secureStorageUsers', JSON.stringify(users));
-                    }
+        window.deleteFileAsOwner = function(fileId) {
+            if (confirm('هل أنت متأكد من حذف هذا الملف من السيرفر؟')) {
+                const success = database.deleteFileFromServer(fileId);
+                if (success) {
+                    showNotification('تم حذف الملف من السيرفر بنجاح', 'success');
+                    
+                    // إعادة تحميل البيانات
+                    loadAllFiles();
+                    loadOwnerOverview();
                 }
-                
-                showNotification('تم حذف الملف بنجاح', 'success');
-                
-                // إعادة تحميل البيانات
-                loadAllFiles();
-                loadOwnerOverview();
             }
         };
 
         function exportUsers() {
-            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
+            const users = database.getUsers();
             const regularUsers = users.filter(u => !u.isOwner);
             
             if (regularUsers.length === 0) {
@@ -2402,7 +2602,7 @@
             const csvContent = "data:text/csv;charset=utf-8," 
                 + "الاسم,البريد الإلكتروني,تاريخ التسجيل,عدد الملفات,التخزين المستخدم,الحالة\n"
                 + regularUsers.map(user => {
-                    const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
+                    const userFiles = database.getUserFiles(user.email);
                     return [
                         `"${user.name}"`,
                         `"${user.email}"`,
@@ -2425,19 +2625,7 @@
         }
 
         function exportFiles() {
-            const users = JSON.parse(localStorage.getItem('secureStorageUsers')) || [];
-            
-            let allFiles = [];
-            users.forEach(user => {
-                const userFiles = JSON.parse(localStorage.getItem(`userFiles_${user.email}`)) || [];
-                userFiles.forEach(file => {
-                    allFiles.push({
-                        ...file,
-                        owner: user.name,
-                        ownerEmail: user.email
-                    });
-                });
-            });
+            const allFiles = database.getServerFiles();
             
             if (allFiles.length === 0) {
                 showNotification('لا توجد بيانات للتصدير', 'error');
@@ -2445,15 +2633,16 @@
             }
             
             const csvContent = "data:text/csv;charset=utf-8," 
-                + "اسم الملف,المالك,البريد الإلكتروني,النوع,الحجم,تاريخ الرفع\n"
+                + "اسم الملف,المالك,البريد الإلكتروني,النوع,الحجم,تاريخ الرفع,نوع الملف\n"
                 + allFiles.map(file => {
                     return [
                         `"${file.name}"`,
                         `"${file.owner}"`,
                         `"${file.ownerEmail}"`,
                         `"${file.type}"`,
-                        `${file.size} ميغابايت`,
-                        `"${file.date}"`
+                        `"${file.size}"`,
+                        `"${new Date(file.uploadedAt).toLocaleDateString('ar-SA')}"`,
+                        file.originalFile ? "أصلي" : "نسخة"
                     ].join(',');
                 }).join('\n');
             
@@ -2466,6 +2655,78 @@
             document.body.removeChild(link);
             
             showNotification('تم تصدير بيانات الملفات بنجاح', 'success');
+        }
+
+        function downloadAllFiles() {
+            const allFiles = database.getServerFiles();
+            
+            if (allFiles.length === 0) {
+                showNotification('لا توجد ملفات للتحميل', 'error');
+                return;
+            }
+            
+            showNotification(`جاري تحميل ${allFiles.length} ملف...`, 'info');
+            
+            // محاكاة تحميل جميع الملفات
+            setTimeout(() => {
+                const zipContent = "محتوى مضغوط لجميع الملفات:\n\n";
+                allFiles.forEach((file, index) => {
+                    zipContent += `${index + 1}. ${file.name} (${file.size}) - ${file.owner}\n`;
+                });
+                
+                const link = document.createElement('a');
+                link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(zipContent);
+                link.download = 'جميع_الملفات_' + new Date().toISOString().split('T')[0] + '.txt';
+                link.click();
+                
+                showNotification(`تم تحميل ${allFiles.length} ملف بنجاح`, 'success');
+            }, 2000);
+        }
+
+        // ============================================
+        // وظائف المستخدم
+        // ============================================
+        window.downloadUserFile = function(fileId) {
+            const file = database.findFileById(fileId);
+            if (file) {
+                database.incrementDownloadCount(fileId);
+                showNotification(`جاري تحميل الملف: ${file.name}`, 'info');
+                
+                // محاكاة تحميل الملف
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(`محتوى الملف: ${file.name}\n\nهذا الملف محفوظ على سيرفر نظام التخزين الآمن.\nتم رفعه بواسطة: ${file.owner}\nتم التشفير: ${file.encrypted ? 'نعم' : 'لا'}`);
+                    link.download = file.name;
+                    link.click();
+                    showNotification(`تم تحميل الملف: ${file.name}`, 'success');
+                }, 1000);
+            }
+        };
+
+        // ============================================
+        // تهيئة التطبيق
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // تم تهيئة قاعدة البيانات في إنشاء الكائن
+            
+            // استعادة المستخدم الحالي
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (currentUser) {
+                if (currentUser.isOwner) {
+                    showPage('owner-page');
+                    loadOwnerDashboard();
+                } else {
+                    showPage('dashboard-page');
+                    loadUserDashboard(currentUser);
+                }
+            }
+
+            // إعداد واجهة تسجيل الدخول
+            setupLoginPage();
         }
     </script>
 </body>
